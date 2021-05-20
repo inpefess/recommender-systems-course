@@ -1,0 +1,6 @@
+[TYPECHECK]
+
+max-line-length=79
+disable=bad-continuation,wrong-import-position
+max-statements=10
+ignore-long-lines=(https://)
