@@ -1,0 +1,23 @@
+student,dataset,model 1,model 2,metric 1,metric 2
+Theo Aguilar Vidal,https://darel13712.github.io/rs_datasets/Datasets/retail_rocket/,implicit ALS,popular,https://darel13712.github.io/rs_metrics/metrics/#ndcg,https://darel13712.github.io/rs_metrics/metrics/#-ndcg
+Sarah Assaf,https://darel13712.github.io/rs_datasets/Datasets/msd/,LightFM,spotlight,https://darel13712.github.io/rs_metrics/metrics/#mrr,https://darel13712.github.io/rs_metrics/metrics/#coverage
+Ayoko Ayika,https://darel13712.github.io/rs_datasets/Datasets/bookx/,SVD,implicit KNN,https://darel13712.github.io/rs_metrics/metrics/#popularity,https://darel13712.github.io/rs_metrics/metrics/#precision
+Romane Bellomo,books from https://darel13712.github.io/rs_datasets/Datasets/amazon/,spotlight,LightFM,https://darel13712.github.io/rs_metrics/metrics/#precision,https://darel13712.github.io/rs_metrics/metrics/#-ndcg
+Alexandre Bermond,https://darel13712.github.io/rs_datasets/Datasets/diginetica/,turi,LightFM,https://darel13712.github.io/rs_metrics/metrics/#hitrate,https://darel13712.github.io/rs_metrics/metrics/#mean-average-precision
+Morgane Bourbao,https://darel13712.github.io/rs_datasets/Datasets/netflix/,implicit ALS,implicit KNN,https://darel13712.github.io/rs_metrics/metrics/#precision,https://darel13712.github.io/rs_metrics/metrics/#mean-average-precision
+Sebastien Creusy,pet from https://darel13712.github.io/rs_datasets/Datasets/amazon/,SVD,implicit ALS,https://darel13712.github.io/rs_metrics/metrics/#mean-average-precision,https://darel13712.github.io/rs_metrics/metrics/#mrr
+Alexandre Deprun,toys from https://darel13712.github.io/rs_datasets/Datasets/amazon/,spotlight,implicit KNN,https://darel13712.github.io/rs_metrics/metrics/#recall,https://darel13712.github.io/rs_metrics/metrics/#precision
+Kokou Laris Edjinedja,sports from https://darel13712.github.io/rs_datasets/Datasets/amazon/,spotlight,popular,https://darel13712.github.io/rs_metrics/metrics/#coverage,https://darel13712.github.io/rs_metrics/metrics/#recall
+Ryan Elahouel,https://darel13712.github.io/rs_datasets/Datasets/jester/,implicit KNN,implicit ALS,https://darel13712.github.io/rs_metrics/metrics/#surprisal,https://darel13712.github.io/rs_metrics/metrics/#recall
+Guillaume Foure,https://darel13712.github.io/rs_datasets/Datasets/anime/,popular,turi,https://darel13712.github.io/rs_metrics/metrics/#recall,https://darel13712.github.io/rs_metrics/metrics/#surprisal
+Theo Gilbert,https://darel13712.github.io/rs_datasets/Datasets/dating_agency/,turi,spotlight,https://darel13712.github.io/rs_metrics/metrics/#precision,https://darel13712.github.io/rs_metrics/metrics/#surprisal
+Achraf Kattass,automotive from https://darel13712.github.io/rs_datasets/Datasets/amazon/,turi,popular,https://darel13712.github.io/rs_metrics/metrics/#hitrate,https://darel13712.github.io/rs_metrics/metrics/#popularity
+Oumaima Khadira,electronics from https://darel13712.github.io/rs_datasets/Datasets/amazon/,SVD,spotlight,https://darel13712.github.io/rs_metrics/metrics/#-ndcg,https://darel13712.github.io/rs_metrics/metrics/#coverage
+Wael Loghmari,tools from https://darel13712.github.io/rs_datasets/Datasets/amazon/,popular,LightFM,https://darel13712.github.io/rs_metrics/metrics/#hitrate,https://darel13712.github.io/rs_metrics/metrics/#popularity
+Nour-Imene Messas,https://darel13712.github.io/rs_datasets/Datasets/rekko/,implicit KNN,turi,https://darel13712.github.io/rs_metrics/metrics/#ndcg,https://darel13712.github.io/rs_metrics/metrics/#precision
+Nicolas Musicki,phones from https://darel13712.github.io/rs_datasets/Datasets/amazon/,popular,SVD,https://darel13712.github.io/rs_metrics/metrics/#surprisal,https://darel13712.github.io/rs_metrics/metrics/#hitrate
+David Prat,https://darel13712.github.io/rs_datasets/Datasets/goodreads/,implicit ALS,SVD,https://darel13712.github.io/rs_metrics/metrics/#-ndcg,https://darel13712.github.io/rs_metrics/metrics/#hitrate
+Antonio Soggia,clothing from https://darel13712.github.io/rs_datasets/Datasets/amazon/,LightFM,SVD,https://darel13712.github.io/rs_metrics/metrics/#coverage,https://darel13712.github.io/rs_metrics/metrics/#mrr
+Florian Spinelli,https://darel13712.github.io/rs_datasets/Datasets/steam/,LightFM,SVD,https://darel13712.github.io/rs_metrics/metrics/#mean-average-precision,https://darel13712.github.io/rs_metrics/metrics/#ndcg
+Victor Vallade,kitchen from https://darel13712.github.io/rs_datasets/Datasets/amazon/,implicit KNN,implicit ALS,https://darel13712.github.io/rs_metrics/metrics/#popularity,https://darel13712.github.io/rs_metrics/metrics/#ndcg
+Zaim Amar Zizi,https://darel13712.github.io/rs_datasets/Datasets/epinions/,SVD,turi,https://darel13712.github.io/rs_metrics/metrics/#mrr,https://darel13712.github.io/rs_metrics/metrics/#hitrate
