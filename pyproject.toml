@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "recommender-systems-course"
+name = "rs_course"
 version = "0.0.1"
 description = "A course on Recommender Systems"
 authors = ["Boris Shminke <boris@shminke.ml>"]
 license = "Apache-2.0"
-readme = "README.md"
+readme = "README.rst"
 classifiers=[
 	"Programming Language :: Python :: 3.7",
 	"License :: OSI Approved :: Apache Software License",
