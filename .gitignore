@@ -1,5 +1,6 @@
 venv/
 *~
+.dir-locals.el
 *.pyc
 .ipynb_checkpoints/
 *.csr
