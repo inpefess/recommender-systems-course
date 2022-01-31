@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rs_course"
-version = "0.0.1"
+version = "0.0.2"
 description = "A course on Recommender Systems"
 authors = ["Boris Shminke <boris@shminke.ml>"]
 license = "Apache-2.0"
@@ -10,7 +10,7 @@ classifiers=[
 	"License :: OSI Approved :: Apache Software License",
 	"Operating System :: OS Independent",
 	"Intended Audience :: Science/Research",
-	"Development Status :: 1 - Planning",
+	"Development Status :: 2 - Pre-Alpha",
 	"Environment :: Console",
 	"Natural Language :: English",
 	"Topic :: Scientific/Engineering :: Artificial Intelligence",
