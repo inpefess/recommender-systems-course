@@ -2,6 +2,9 @@
 Building Recommender Systems
 ============================
 
+.. contents::
+   :depth: 1
+	   
 Description
 ===========
 
@@ -43,9 +46,19 @@ Topics
 How to Install
 ==============
 
-For now, only Python 3.7 is supported (since TuriCreate doesn't work
-on later versions). The best way to install is to use ``pip``:
+On `Google Colab <https://colab.research.google.com/>`__ installation
+takes 3-5 minutes:
 
 .. code:: sh
 
    pip install git+https://github.com/inpefess/recommender-systems-course.git
+
+On Linux. Only Python 3.7 is supported (since TuriCreate doesn't work
+on later versions). Installation process is the same as on Colab.
+
+On Windows. Use `Windows Subsystem for Linux (WSL) <https://docs.microsoft.com/en-us/windows/wsl/about#main>`__
+(it's the only way supported by TuriCreate). It doesn't work with
+Anaconda! On WSL, proceed as on any Linux.
+
+On macOS. Should be in principle installable in a similar way as on
+Linux, but not tested.

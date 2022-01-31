@@ -19,7 +19,13 @@ from typing import Dict, List, Tuple
 import numpy as np
 import pandas as pd
 from implicit.als import AlternatingLeastSquares
-from implicit.gpu import Matrix  # pylint: disable=no-name-in-module
+
+try:
+    from implicit.gpu import Matrix  # pylint: disable=no-name-in-module
+except ImportError:
+    from scipy.sparse import csr_matrix as Matrix
+
+# pylint: disable=ungrouped-imports
 from implicit.nearest_neighbours import ItemItemRecommender
 from rs_datasets import MovieLens
 
