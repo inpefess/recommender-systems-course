@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-collaborative filtering KNN recommender
+Collaborative Filtering KNN Recommender
+=======================================
+
 """
 from implicit.nearest_neighbours import TFIDFRecommender
 from rs_datasets import MovieLens
@@ -24,9 +26,9 @@ from rs_course.utils import (
 )
 
 
-def main(dataset_size: str):
+def collaborative_filtering_knn(dataset_size: str) -> None:
     """
-    >>> main("small")
+    >>> collaborative_filtering_knn("small")
     0.5
 
     :param dataset_size: a size of MovieLens dataset to use

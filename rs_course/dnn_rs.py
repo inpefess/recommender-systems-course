@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-DNN recommender example
+DNN Recommender Example
+=======================
+
 """
 import torch
 
@@ -28,10 +30,10 @@ from rs_course.lightfm_bpr import get_lightfm_predictions
 from rs_course.utils import movielens_split, pandas_to_scipy
 
 
-def main(dataset_size: str, use_gpu: bool, verbose: bool):
+def dnn_recommender(dataset_size: str, use_gpu: bool, verbose: bool) -> None:
     """
     >>> import os
-    >>> main("small", os.environ.get("TEST_ON_GPU", False), False)
+    >>> dnn_recommender("small", os.environ.get("TEST_ON_GPU", False), False)
     0...
 
     :param dataset_size: a size of MovieLens dataset to use
@@ -45,7 +47,7 @@ def main(dataset_size: str, use_gpu: bool, verbose: bool):
     )
     recommender = ImplicitFactorizationModel(
         embedding_dim=128,
-        batch_size=2 ** 18,
+        batch_size=2**18,
         use_cuda=use_gpu,
         loss="bpr",
         n_iter=15,
