@@ -15,3 +15,4 @@ venv/
 ltximg/
 flycheck_*.*
 .coverage*
+build/

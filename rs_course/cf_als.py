@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-collaborative filtering ALS recommender
+Collaborative Filtering ALS Recommender
+=======================================
+
 """
 import os
 from typing import Tuple

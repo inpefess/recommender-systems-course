@@ -2,9 +2,6 @@
 Building Recommender Systems
 ============================
 
-.. contents::
-   :depth: 1
-	   
 Description
 ===========
 
