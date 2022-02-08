@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-content-based item2item KNN recommender
+Content-based item2item KNN Recommender
+=======================================
+
 """
 from implicit.nearest_neighbours import ItemItemRecommender, TFIDFRecommender
 from rs_datasets import MovieLens

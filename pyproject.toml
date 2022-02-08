@@ -38,6 +38,8 @@ flake8 = "*"
 jupyterlab = "*"
 data-science-types = "*"
 pytest-cov = "*"
+sphinx-rtd-theme = "*"
+sphinx-autodoc-typehints = "*"
 
 [tool.black]
 line-length=79
