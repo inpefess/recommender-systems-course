@@ -13,6 +13,8 @@
 # limitations under the License.
 """
 Cold Start Recommender Example
+==============================
+
 """
 from typing import Dict, List, Tuple
 
@@ -99,15 +101,15 @@ def compute_cold_factors(
                     else known_factors.to_numpy()
                 )
                 new_factors += weight * known_factors_array
-                norm += weight ** 2
+                norm += weight**2
             cold_factors[item_id] = new_factors / np.sqrt(norm)
     return cold_factors
 
 
-def main(dataset_size: str, use_gpu: bool):
+def cold_start(dataset_size: str, use_gpu: bool) -> None:
     """
     >>> import os
-    >>> main("small", os.environ.get("TEST_ON_GPU", False))
+    >>> cold_start("small", os.environ.get("TEST_ON_GPU", False))
     Collaborative Filtering Hit-Rate: 0...
     Content-Based Hit-Rate: 0.2
     cold items percentage in test: 0.26815240833932424

@@ -13,6 +13,8 @@
 # limitations under the License.
 """
 Turi Recommender Example
+========================
+
 """
 import pandas as pd
 import turicreate as tc
@@ -47,9 +49,9 @@ def turi_recommender(
     print(hitrate(test, results.to_dataframe()))
 
 
-def main(dataset_size: str, verbose: bool):
+def evaluate_turi_recommender(dataset_size: str, verbose: bool) -> None:
     """
-    >>> main("small", False)
+    >>> evaluate_turi_recommender("small", False)
     0...
     0...
 

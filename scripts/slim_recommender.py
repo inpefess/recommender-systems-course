@@ -13,6 +13,8 @@
 # limitations under the License.
 """
 SLIM recommender
+================
+
 https://github.com/KarypisLab/SLIM
 https://github.com/MaurizioFD/RecSys2019_DeepLearning_Evaluation
 """
@@ -25,9 +27,9 @@ from SLIM import SLIM, SLIMatrix
 from rs_course.utils import movielens_split
 
 
-def main(dataset_size: str):
+def slim_recommender(dataset_size: str) -> None:
     """
-    >>> main("small")
+    >>> slim_recommender("small")
     Learning takes...
     0.55
 

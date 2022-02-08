@@ -52,7 +52,7 @@ MODELS = [
 ]
 
 
-def main() -> None:
+def generate_tasks() -> None:
     """generate a CSV with tasks"""
     models = 3 * MODELS + MODELS[:1]
     metrics = 2 * METRICS + METRICS[:2]

@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-Pure SVD recommender
+Pure SVD Recommender
+====================
+
 """
 from typing import Dict, List
 
@@ -62,9 +64,9 @@ def get_svd_recs(
     return pred
 
 
-def main(dataset_size: str):
+def pure_svd_recommender(dataset_size: str) -> None:
     """
-    >>> main("small")
+    >>> pure_svd_recommender("small")
     0.3
 
     :param dataset_size: a size of MovieLens dataset to use

@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-LightFM BPR example
+LightFM BPR Example
+===================
+
 """
 import os
 from typing import Any, Dict, List
@@ -81,9 +83,9 @@ def get_lightfm_predictions(
     return pred
 
 
-def main(dataset_size: str):
+def lightfm_recommender(dataset_size: str) -> None:
     """
-    >>> main("small")
+    >>> lightfm_recommender("small")
     0.1
 
     :param dataset_size: a size of MovieLens dataset to use
