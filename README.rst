@@ -50,12 +50,10 @@ takes 3-5 minutes:
 
    pip install git+https://github.com/inpefess/recommender-systems-course.git
 
-On Linux. Only Python 3.7 is supported (since TuriCreate doesn't work
-on later versions). Installation process is the same as on Colab.
+On Linux. Installation process is the same as on Colab.
 
 On Windows. Use `Windows Subsystem for Linux (WSL) <https://docs.microsoft.com/en-us/windows/wsl/about#main>`__
-(it's the only way supported by TuriCreate). It doesn't work with
-Anaconda! On WSL, proceed as on any Linux.
+On WSL, proceed as on any Linux. Anaconda support is comming in next releases.
 
 On macOS. Should be in principle installable in a similar way as on
 Linux, but not tested.
