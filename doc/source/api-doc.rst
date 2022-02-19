@@ -33,5 +33,7 @@ Package Documentation
    :members:
 .. automodule:: rs_course.cold_start
    :members:
+.. automodule:: rs_course.factorization_machines
+   :members:
 .. automodule:: rs_course.utils
    :members:
