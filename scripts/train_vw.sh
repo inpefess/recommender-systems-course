@@ -7,15 +7,18 @@ split --number l/${TOTAL} \
       train.vw train.
 i=0
 FINAL=$(expr $TOTAL - 1)
+spanning_tree
 while [ ${i} -le $FINAL ]
 do
     if [ ${i} -eq $FINAL ]
-    then   
+    then
 	SAVE_MODEL="--final_regressor model.vw"
+        BACKGROUND=
     else
         SAVE_MODEL=
-    fi	   
-    vw --span_server localhost \
+        BACKGROUND="&"
+    fi
+    eval vw --span_server localhost \
        --total $TOTAL \
        --node ${i} \
        --unique_id 0 \
@@ -25,10 +28,12 @@ do
        --data train.${i} \
        --lrq ui${RANK} uu${RANK} ii${RANK} \
        --loss_function logistic \
-       --learning_rate 0.001 \
+       --learning_rate 0.1 \
        --passes 10 \
+       --bit_precision 20 \
        --early_terminate 10 \
        --holdout_period 5 \
-       > log.${i} 2>&1 &
+       > log.${i} 2>&1 $BACKGROUND
     i=$(expr ${i} + 1)
 done
+killall spanning_tree

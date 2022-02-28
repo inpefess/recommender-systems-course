@@ -6,9 +6,16 @@ split --number l/${TOTAL} \
       test.vw test.
 i=0
 FINAL=$(expr $TOTAL - 1)
+spanning_tree
 while [ ${i} -le $FINAL ]
 do
-    vw --span_server localhost \
+    if [ ${i} -eq $FINAL ]
+    then
+        BACKGROUND=
+    else
+        BACKGROUND="&"
+    fi
+    eval vw --span_server localhost \
        --total $TOTAL \
        --node ${i} \
        --unique_id 1 \
@@ -19,6 +26,8 @@ do
        --initial_regressor model.vw \
        --testonly \
        --predictions pred.${i} \
-       > log.${i} 2>&1 &
+       > log.${i} 2>&1 $BACKGROUND
     i=$(expr ${i} + 1)
 done
+killall spanning_tree
+cat pred.* > pred
