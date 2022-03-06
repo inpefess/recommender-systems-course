@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-popular (non personal) recommender
+Popular (not Personalised) Recommender
+======================================
+
 """
 import pandas as pd
 from rs_datasets import MovieLens
@@ -21,9 +23,9 @@ from rs_metrics import hitrate
 from rs_course.utils import movielens_split
 
 
-def main(dataset_size: str):
+def popular_recommender(dataset_size: str) -> None:
     """
-    >>> main("small")
+    >>> popular_recommender("small")
     0.5555555555555556
 
     :param dataset_size: a size of MovieLens dataset to use
