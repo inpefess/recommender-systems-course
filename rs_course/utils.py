@@ -17,6 +17,7 @@ Useful Function for the Whole Course
 """
 from typing import Tuple
 
+import numpy as np
 import pandas as pd
 from implicit.nearest_neighbours import ItemItemRecommender
 from rs_datasets import MovieLens
@@ -79,7 +80,11 @@ def movielens_split(
 
 
 def evaluate_implicit_recommender(
-    recommender: ItemItemRecommender, train: csr_matrix, test: pd.DataFrame
+    recommender: ItemItemRecommender,
+    train: csr_matrix,
+    test: pd.DataFrame,
+    split_test_users_into: int,
+    top_k: int,
 ) -> float:
     """
     compute hit-rate for a recommender from ``implicit`` package
@@ -87,22 +92,31 @@ def evaluate_implicit_recommender(
     :param recommender: some recommender from ``implicit`` package
     :param train: sparse matrix of ratings
     :param test: pandas dataset of ratings for testing
+    :param split_test_users_into: split ``test`` by users into several chunks
+        to fit into memory
+    :param top_k: how many items to recommend to each user
     :returns: hitrate@10
     """
     all_recs = []
-    for user_id in tqdm(test.user_id.unique()):
+    test_users_parts = np.array_split(
+        test.user_id.unique(), split_test_users_into
+    )
+    for test_users_part in tqdm(test_users_parts):
+        item_ids, weights = recommender.recommend(
+            test_users_part, train[test_users_part], top_k
+        )
         user_recs = pd.DataFrame(
-            recommender.recommend(int(user_id), train),
+            np.vstack([item_ids.reshape((1, -1)), weights.reshape((1, -1))]).T,
             columns=["item_id", "weight"],
         )
-        user_recs["user_id"] = user_id
+        user_recs["user_id"] = np.repeat(test_users_part, top_k)
         all_recs.append(user_recs)
     all_recs_pd = pd.concat(all_recs)
     return hitrate(test, all_recs_pd)
 
 
 def get_sparse_item_features(
-    movielens: MovieLens,
+    movielens: MovieLens, ratings: pd.DataFrame
 ) -> Tuple[csr_matrix, pd.DataFrame]:
     """
     extract item features from ``tags`` dataset
@@ -116,7 +130,7 @@ def get_sparse_item_features(
     genres_tags = genres_data.explode("tag")[["item_id", "user_id", "tag"]]
     all_tags = movielens.tags.drop(columns=["timestamp"]).append(genres_tags)
     agg_tags = (
-        all_tags[all_tags.item_id.isin(movielens.ratings.item_id)]
+        all_tags[all_tags.item_id.isin(ratings.item_id)]
         .groupby(["item_id", "tag"])
         .count()
         .reset_index()
@@ -128,7 +142,17 @@ def get_sparse_item_features(
             "user_id",
             "item_id",
             "tag_id",
-            (movielens.ratings.item_id.max() + 1, agg_tags.tag_id.max() + 1),
+            (ratings.item_id.max() + 1, agg_tags.tag_id.max() + 1),
         ),
         agg_tags,
+    )
+
+
+def enumerate_users_and_items(ratings: pd.DataFrame) -> None:
+    """inplace change of user and item IDs into numbers"""
+    ratings["user_id"] = (
+        ratings.user_id.astype("category").cat.codes + 1  # type: ignore
+    )
+    ratings["item_id"] = (
+        ratings.item_id.astype("category").cat.codes + 1  # type: ignore
     )

@@ -26,7 +26,7 @@ rs-metrics = "*"
 pandas = "*"
 lightfm = "*"
 torch = "*"
-implicit = {git="https://github.com/benfred/implicit.git", branch="18a8010b07e8a86f8eb37f837b5bbda11647501f"}
+implicit = "*"
 spotlight = {git="https://github.com/maciejkula/spotlight.git", branch="v0.1.6"}
 vowpalwabbit = "*"
 
