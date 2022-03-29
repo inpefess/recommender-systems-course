@@ -43,7 +43,7 @@ def als_recommendations(
     ...     "small", os.environ.get("TEST_ON_GPU", False), 1
     ... )
     >>> print(hitrate)
-    0.45
+    0...
 
     :param dataset_size: a size of MovieLens dataset to use
     :param use_gpu: whether to use GPU or not
