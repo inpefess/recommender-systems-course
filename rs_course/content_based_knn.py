@@ -20,6 +20,7 @@ from implicit.nearest_neighbours import ItemItemRecommender, TFIDFRecommender
 from rs_datasets import MovieLens
 
 from rs_course.utils import (
+    enumerate_users_and_items,
     evaluate_implicit_recommender,
     get_sparse_item_features,
     movielens_split,
@@ -27,24 +28,30 @@ from rs_course.utils import (
 )
 
 
-def get_content_based_recommender(dataset_size: str) -> ItemItemRecommender:
+def get_content_based_recommender(
+    dataset_size: str, split_test_users_into: int
+) -> ItemItemRecommender:
     """
     main function of the module
-    >>> _ = get_content_based_recommender("small")
-    Content-Based Hit-Rate: 0.2
+    >>> _ = get_content_based_recommender("small", 1)
+    Content-Based Hit-Rate: 0.1
 
     :param dataset_size: a size of MovieLens dataset to use
     """
     movielens = MovieLens(dataset_size)
-    train, test, shape = movielens_split(movielens.ratings, 0.95, True)
+    ratings = movielens.ratings
+    enumerate_users_and_items(ratings)
+    train, test, shape = movielens_split(ratings, 0.95, True)
     sparse_train = pandas_to_scipy(
         train, "rating", "user_id", "item_id", shape
     )
-    item_features, _ = get_sparse_item_features(movielens)
+    item_features, _ = get_sparse_item_features(movielens, ratings)
     recommender = TFIDFRecommender()
-    recommender.fit(item_features)
+    recommender.fit(item_features.T)
     print(
         "Content-Based Hit-Rate:",
-        evaluate_implicit_recommender(recommender, sparse_train, test),
+        evaluate_implicit_recommender(
+            recommender, sparse_train, test, split_test_users_into, 10
+        ),
     )
     return recommender

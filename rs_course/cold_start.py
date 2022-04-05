@@ -29,24 +29,21 @@ except ImportError:
 
 # pylint: disable=ungrouped-imports
 from implicit.nearest_neighbours import ItemItemRecommender
-from rs_datasets import MovieLens
 
 from rs_course.cf_als import als_recommendations
 from rs_course.content_based_knn import (
     evaluate_implicit_recommender,
     get_content_based_recommender,
 )
-from rs_course.utils import movielens_split
 
 
-def get_cold_items(dataset_size: str) -> Tuple[List[int], pd.DataFrame]:
+def get_cold_items(
+    train: pd.DataFrame, test: pd.DataFrame
+) -> Tuple[List[int], pd.DataFrame]:
     """
     :param dataset_size: a size of MovieLens dataset to use
     :returns: a list of cold items and the test set
     """
-    train, test, _ = movielens_split(
-        MovieLens(dataset_size).ratings, 0.95, True
-    )
     cold_items = list(
         set(test.item_id.values).difference(set(train.item_id.values))
     )
@@ -106,12 +103,14 @@ def compute_cold_factors(
     return cold_factors
 
 
-def cold_start(dataset_size: str, use_gpu: bool) -> None:
+def cold_start(
+    dataset_size: str, use_gpu: bool, split_test_users_into: int
+) -> None:
     """
     >>> import os
-    >>> cold_start("small", os.environ.get("TEST_ON_GPU", False))
+    >>> cold_start("small", os.environ.get("TEST_ON_GPU", False), 10)
     Collaborative Filtering Hit-Rate: 0...
-    Content-Based Hit-Rate: 0.2
+    Content-Based Hit-Rate: 0...
     cold items percentage in test: 0.26815240833932424
     cold rows percentage in test: 0.2536554354736173
     users with cold items percentage in test: 0.75
@@ -121,12 +120,14 @@ def cold_start(dataset_size: str, use_gpu: bool) -> None:
     :param dataset_size: a size of MovieLens dataset to use
     :param use_gpu: whether to use GPU or not
     """
-    sparse_train, recommender, cf_hitrate = als_recommendations(
-        dataset_size, use_gpu
+    sparse_train, recommender, cf_hitrate, train, test = als_recommendations(
+        dataset_size, use_gpu, split_test_users_into
     )
     print("Collaborative Filtering Hit-Rate:", cf_hitrate)
-    content_based_recommender = get_content_based_recommender(dataset_size)
-    cold_items, test = get_cold_items(dataset_size)
+    content_based_recommender = get_content_based_recommender(
+        dataset_size, split_test_users_into
+    )
+    cold_items, test = get_cold_items(train, test)
     cold_factors = compute_cold_factors(
         cold_items, content_based_recommender, recommender
     )
@@ -136,11 +137,11 @@ def cold_start(dataset_size: str, use_gpu: bool) -> None:
         else recommender.item_factors.to_numpy()
     )
     for item_id, item_factors in cold_factors.items():
-        new_item_factors[item_id] = item_factors
+        new_item_factors[int(item_id)] = item_factors
     recommender.item_factors = (
         Matrix(new_item_factors) if use_gpu else new_item_factors
     )
     print(
         "Hybrid Hit-Rate:",
-        evaluate_implicit_recommender(recommender, sparse_train, test),
+        evaluate_implicit_recommender(recommender, sparse_train, test, 3, 10),
     )

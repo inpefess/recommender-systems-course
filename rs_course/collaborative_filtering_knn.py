@@ -40,5 +40,7 @@ def collaborative_filtering_knn(dataset_size: str) -> None:
         train, "rating", "user_id", "item_id", shape
     )
     recommender = TFIDFRecommender()
-    recommender.fit(sparse_train.T)
-    print(evaluate_implicit_recommender(recommender, sparse_train, test))
+    recommender.fit(sparse_train)
+    print(
+        evaluate_implicit_recommender(recommender, sparse_train, test, 3, 10)
+    )
