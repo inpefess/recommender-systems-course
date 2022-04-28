@@ -15,7 +15,7 @@
 Useful Function for the Whole Course
 ====================================
 """
-from typing import Tuple
+from typing import Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -156,3 +156,36 @@ def enumerate_users_and_items(ratings: pd.DataFrame) -> None:
     ratings["item_id"] = (
         ratings.item_id.astype("category").cat.codes + 1  # type: ignore
     )
+
+
+def filter_users_and_items(
+    ratings: pd.DataFrame,
+    min_items_per_user: Optional[int],
+    min_users_per_item: Optional[int],
+) -> pd.DataFrame:
+    """
+    leave only items with at least ``min_users_per_item`` users who rated them
+    and only users who rated at least ``min_items_per_user``
+
+    :param min_items_per_user: if ``None`` then don't filter
+    :param min_users_per_item: if ``None`` then don't filter
+    :returns: filtered ratings dataset
+    """
+    filtered_ratings = ratings
+    if min_items_per_user is not None:
+        item_counts = ratings.groupby("user_id").count().item_id
+        active_users = item_counts[
+            item_counts >= min_items_per_user
+        ].reset_index()["user_id"]
+        filtered_ratings = filtered_ratings[
+            filtered_ratings.user_id.isin(active_users)
+        ]
+    if min_users_per_item is not None:
+        user_counts = ratings.groupby("item_id").count().user_id
+        popular_items = user_counts[
+            user_counts >= min_users_per_item
+        ].reset_index()["item_id"]
+        filtered_ratings = filtered_ratings[
+            filtered_ratings.item_id.isin(popular_items)
+        ]
+    return filtered_ratings
