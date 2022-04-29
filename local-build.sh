@@ -11,5 +11,5 @@ pylint --rcfile=.pylintrc ${PACKAGE_NAME}
 mypy --config-file mypy.ini ${PACKAGE_NAME}
 export TEST_ON_GPU=
 pytest --cov ${PACKAGE_NAME} --cov-report term-missing \
-       --cov-fail-under=99 ${PACKAGE_NAME}
+       --cov-fail-under=95 ${PACKAGE_NAME}
 scc -i py ${PACKAGE_NAME}
