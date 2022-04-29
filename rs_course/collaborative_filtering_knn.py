@@ -16,8 +16,8 @@ Collaborative Filtering KNN Recommender
 =======================================
 
 """
+import pandas as pd
 from implicit.nearest_neighbours import TFIDFRecommender
-from rs_datasets import MovieLens
 
 from rs_course.utils import (
     evaluate_implicit_recommender,
@@ -26,21 +26,28 @@ from rs_course.utils import (
 )
 
 
-def collaborative_filtering_knn(dataset_size: str) -> None:
+def collaborative_filtering_knn(
+    ratings: pd.DataFrame,
+    number_of_neigbours: int,
+    split_test_users_into: int,
+) -> None:
     """
-    >>> collaborative_filtering_knn("small")
-    0.5
+    >>> collaborative_filtering_knn(getfixture("test_dataset").ratings, 7, 1)
+    1.0
 
-    :param dataset_size: a size of MovieLens dataset to use
+    :param ratings: a dataset of user-items intersection
+    :param number_of_neigbours: number of neigbours for KNN
+    :param split_test_users_into: a number of chunks for testing
+    :returns:
     """
-    train, test, shape = movielens_split(
-        MovieLens(dataset_size).ratings, 0.95, True
-    )
+    train, test, shape = movielens_split(ratings, 0.95, True)
     sparse_train = pandas_to_scipy(
         train, "rating", "user_id", "item_id", shape
     )
-    recommender = TFIDFRecommender()
+    recommender = TFIDFRecommender(K=number_of_neigbours)
     recommender.fit(sparse_train)
     print(
-        evaluate_implicit_recommender(recommender, sparse_train, test, 3, 10)
+        evaluate_implicit_recommender(
+            recommender, sparse_train, test, split_test_users_into, 10
+        )
     )
