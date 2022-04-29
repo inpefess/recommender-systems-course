@@ -29,7 +29,10 @@ from rs_course.utils import movielens_split, pandas_to_scipy
 
 
 def get_svd_recs(
-    recommender: TruncatedSVD, sparse_train: csr_matrix, test: pd.DataFrame
+    recommender: TruncatedSVD,
+    sparse_train: csr_matrix,
+    test: pd.DataFrame,
+    split_test_users_into: int,
 ) -> Dict[int, List[int]]:
     """
     get recommendations given a truncated SVD decomposition
@@ -37,11 +40,12 @@ def get_svd_recs(
     :param recommender: a truncated SVD decomposition
     :param sparse_train: a ``scr_matrix`` representation of the train data
     :param test: test data
+    :param split_test_users_into: a number of chunks for testing
     :returns: recommendations in ``rs_metrics`` compatible format
     """
     user_embeddings = recommender.transform(sparse_train)
     test_users = test.user_id.unique()
-    test_parts = np.array_split(test_users, 3)
+    test_parts = np.array_split(test_users, split_test_users_into)
     pred = {}
     for test_part in tqdm(test_parts):
         raw_weights = user_embeddings[test_part].dot(recommender.components_)
@@ -64,16 +68,20 @@ def get_svd_recs(
 
 
 def pure_svd_recommender(
-    ratings: pd.DataFrame, model_config: Dict[str, Any]
+    ratings: pd.DataFrame,
+    split_test_users_into: int,
+    model_config: Dict[str, Any],
 ) -> None:
     """
     >>> pure_svd_recommender(
     ...     getfixture("test_dataset").ratings,
-    ...     {"n_components": 1, "random_state": 0}
+    ...     1,
+    ...     {"n_components": 1, "random_state": 0},
     ... )
     1.0
 
     :param ratings: a dataset of user-items intersection
+    :param split_test_users_into: a number of chunks for testing
     :param model_config: a dict of ``TruncatedSVD`` argument for model training
     :returns:
     """
@@ -82,5 +90,5 @@ def pure_svd_recommender(
         train, "rating", "user_id", "item_id", shape
     )
     recommender = TruncatedSVD(**model_config).fit(sparse_train)
-    pred = get_svd_recs(recommender, sparse_train, test)
+    pred = get_svd_recs(recommender, sparse_train, test, split_test_users_into)
     print(hitrate(test, pred))
