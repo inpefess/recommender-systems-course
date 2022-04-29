@@ -42,7 +42,8 @@ def als_recommendations(
     >>> model_params = {
     ...      "factors": 1,
     ...      "use_gpu": os.environ.get("TEST_ON_GPU", False),
-    ...      "random_state": 0
+    ...      "random_state": 0,
+    ...      "iterations": 1,
     ... }
     >>> _, _, hitrate, _, _ = als_recommendations(
     ...      ratings=getfixture("test_dataset").ratings,

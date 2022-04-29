@@ -15,6 +15,10 @@
 Fixtures for unit tests
 =======================
 """
+import torch
+
+if torch.cuda.is_available():
+    torch.cuda.current_device()
 from pytest import fixture
 from rs_datasets import MovieLens
 
