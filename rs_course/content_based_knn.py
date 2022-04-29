@@ -33,7 +33,7 @@ def get_content_based_recommender(
     """
     main function of the module
     >>> _ = get_content_based_recommender(getfixture("test_dataset"), 1)
-    Content-Based Hit-Rate: 0.0
+    Content-Based Hit-Rate: 1.0
 
     :param movielens: a MovieLens dataset
     """

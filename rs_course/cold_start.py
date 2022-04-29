@@ -119,7 +119,7 @@ def cold_start(
     ... }
     >>> cold_start(getfixture("test_dataset"), als_config, 1)
     Collaborative Filtering Hit-Rate: 1.0
-    Content-Based Hit-Rate: 0.0
+    Content-Based Hit-Rate: 1.0
     cold items percentage in test: 0.0
     cold rows percentage in test: 0.0
     users with cold items percentage in test: 0.0
