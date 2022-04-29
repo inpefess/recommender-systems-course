@@ -17,7 +17,6 @@ Factorization Machines with Vowpal Wabbit
 """
 import pandas as pd
 import vowpalwabbit
-from rs_datasets import MovieLens
 from sklearn.metrics import roc_auc_score
 from vowpalwabbit.dftovw import DFtoVW
 
@@ -44,21 +43,27 @@ def _prepare_data(ratings: pd.DataFrame) -> None:
 
 
 def factorization_machines(
-    dataset_size: str, num_epochs: int, verbose: bool, seed: int
+    ratings: pd.DataFrame,
+    num_epochs: int,
+    verbose: bool,
+    seed: int,
+    bit_precision: int,
 ) -> float:
     """
     factorization machine example
 
-    >>> factorization_machines("100k", 1, False, 42)
-    0.5828816652690771
+    >>> factorization_machines(
+    ...     getfixture("test_dataset").ratings, 1, False, 0, 1
+    ... )
+    0.8333333333333333
 
     :param dataset_size: a size of MovieLens dataset to use
     :param num_epochs: number of epochs (``vw`` passes)
     :param verbose: an opposite of ``vw`` quiet
     :param seed: a random seed for testing
+    :param bit_precision: a VW argument
     :returns:
     """
-    ratings = MovieLens(dataset_size).ratings
     _prepare_data(ratings)
     train, test, _ = movielens_split(ratings, 0.95)
     model = vowpalwabbit.Workspace(
@@ -67,7 +72,7 @@ def factorization_machines(
         learning_rate=0.01,
         holdout_period=5,
         loss_function="logistic",
-        bit_precision=22,
+        bit_precision=bit_precision,
         l2=0.001,
         quiet=not verbose,
         random_seed=seed,
