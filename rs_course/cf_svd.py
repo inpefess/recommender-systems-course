@@ -16,11 +16,10 @@ Pure SVD Recommender
 ====================
 
 """
-from typing import Dict, List
+from typing import Any, Dict, List
 
 import numpy as np
 import pandas as pd
-from rs_datasets import MovieLens
 from rs_metrics import hitrate
 from scipy.sparse import csr_matrix
 from sklearn.decomposition import TruncatedSVD
@@ -64,20 +63,24 @@ def get_svd_recs(
     return pred
 
 
-def pure_svd_recommender(dataset_size: str) -> None:
+def pure_svd_recommender(
+    ratings: pd.DataFrame, model_config: Dict[str, Any]
+) -> None:
     """
-    >>> pure_svd_recommender("small")
-    0.3
+    >>> pure_svd_recommender(
+    ...     getfixture("test_dataset").ratings,
+    ...     {"n_components": 1, "random_state": 0}
+    ... )
+    1.0
 
-    :param dataset_size: a size of MovieLens dataset to use
+    :param ratings: a dataset of user-items intersection
+    :param model_config: a dict of ``TruncatedSVD`` argument for model training
+    :returns:
     """
-    ratings = MovieLens(dataset_size).ratings
     train, test, shape = movielens_split(ratings, 0.95, True)
     sparse_train = pandas_to_scipy(
         train, "rating", "user_id", "item_id", shape
     )
-    recommender = TruncatedSVD(n_components=100, random_state=0).fit(
-        sparse_train
-    )
+    recommender = TruncatedSVD(**model_config).fit(sparse_train)
     pred = get_svd_recs(recommender, sparse_train, test)
     print(hitrate(test, pred))

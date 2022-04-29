@@ -17,15 +17,13 @@ Collaborative Filtering ALS Recommender
 
 """
 import os
-from typing import Tuple
+from typing import Any, Dict, Tuple
 
 import pandas as pd
 from implicit.als import AlternatingLeastSquares
-from rs_datasets import MovieLens
 from scipy.sparse import csr_matrix
 
 from rs_course.utils import (
-    enumerate_users_and_items,
     evaluate_implicit_recommender,
     movielens_split,
     pandas_to_scipy,
@@ -33,31 +31,39 @@ from rs_course.utils import (
 
 
 def als_recommendations(
-    dataset_size: str, use_gpu: bool, split_test_users_into: int
+    ratings: pd.DataFrame,
+    model_params: Dict[str, Any],
+    split_test_users_into: int,
 ) -> Tuple[
     csr_matrix, AlternatingLeastSquares, float, pd.DataFrame, pd.DataFrame
 ]:
     """
     >>> import os
+    >>> model_params = {
+    ...      "factors": 1,
+    ...      "use_gpu": os.environ.get("TEST_ON_GPU", False),
+    ...      "random_state": 0
+    ... }
     >>> _, _, hitrate, _, _ = als_recommendations(
-    ...     "small", os.environ.get("TEST_ON_GPU", False), 1
+    ...      ratings=getfixture("test_dataset").ratings,
+    ...      model_params=model_params,
+    ...      split_test_users_into=1,
     ... )
     >>> print(hitrate)
-    0...
+    1.0
 
-    :param dataset_size: a size of MovieLens dataset to use
-    :param use_gpu: whether to use GPU or not
+    :param ratings: a dataset of user-items intersection
+    :param model_params: ALS training parameters
+    :param split_test_users_into: a number of chunks for testing
+    :returns: a tuple of train set in sparse format, trained recommender,
+        hitrate@10, train, and test test in ``pandas format``
     """
-    ratings = MovieLens(dataset_size).ratings
-    enumerate_users_and_items(ratings)
     train, test, shape = movielens_split(ratings, 0.95, True)
     sparse_train = pandas_to_scipy(
         train, "rating", "user_id", "item_id", shape
     )
     os.environ["OPENBLAS_NUM_THREADS"] = "1"
-    recommender = AlternatingLeastSquares(
-        factors=128, use_gpu=use_gpu, random_state=0
-    )
+    recommender = AlternatingLeastSquares(**model_params)
     recommender.fit(sparse_train)
     return (
         sparse_train,

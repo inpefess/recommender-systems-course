@@ -29,16 +29,15 @@ from rs_course.utils import (
 
 
 def get_content_based_recommender(
-    dataset_size: str, split_test_users_into: int
+    movielens: MovieLens, split_test_users_into: int
 ) -> ItemItemRecommender:
     """
     main function of the module
-    >>> _ = get_content_based_recommender("small", 1)
-    Content-Based Hit-Rate: 0.1
+    >>> _ = get_content_based_recommender(getfixture("test_dataset"), 1)
+    Content-Based Hit-Rate: 0.0
 
-    :param dataset_size: a size of MovieLens dataset to use
+    :param movielens: a MovieLens dataset
     """
-    movielens = MovieLens(dataset_size)
     ratings = movielens.ratings
     enumerate_users_and_items(ratings)
     train, test, shape = movielens_split(ratings, 0.95, True)

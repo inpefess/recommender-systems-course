@@ -16,13 +16,15 @@ Cold Start Recommender Example
 ==============================
 
 """
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 import numpy as np
 import pandas as pd
 from implicit.als import AlternatingLeastSquares
+from rs_datasets import MovieLens
 
 try:
+    # pylint: disable=ungrouped-imports
     from implicit.gpu import Matrix  # pylint: disable=no-name-in-module
 except ImportError:
     from scipy.sparse import csr_matrix as Matrix
@@ -104,28 +106,39 @@ def compute_cold_factors(
 
 
 def cold_start(
-    dataset_size: str, use_gpu: bool, split_test_users_into: int
+    movielens: MovieLens,
+    als_config: Dict[str, Any],
+    split_test_users_into: int,
 ) -> None:
     """
     >>> import os
-    >>> cold_start("small", os.environ.get("TEST_ON_GPU", False), 10)
-    Collaborative Filtering Hit-Rate: 0...
-    Content-Based Hit-Rate: 0...
-    cold items percentage in test: 0.26815240833932424
-    cold rows percentage in test: 0.2536554354736173
-    users with cold items percentage in test: 0.75
+    >>> als_config = {
+    ...      "factors": 1,
+    ...      "use_gpu": os.environ.get("TEST_ON_GPU", False),
+    ...      "random_state": 0
+    ... }
+    >>> cold_start(getfixture("test_dataset"), als_config, 1)
+    Collaborative Filtering Hit-Rate: 1.0
+    Content-Based Hit-Rate: 0.0
+    cold items percentage in test: 0.0
+    cold rows percentage in test: 0.0
+    users with cold items percentage in test: 0.0
     users with no cold items percentage in test: 1.0
-    Hybrid Hit-Rate: 0...
+    Hybrid Hit-Rate: 1.0
 
-    :param dataset_size: a size of MovieLens dataset to use
-    :param use_gpu: whether to use GPU or not
+    :param movielens: MovieLens dataset
+    :param als_config: collaborative model training params
+    :param split_test_users_into: a number of chunks for testing
+    :returns:
     """
     sparse_train, recommender, cf_hitrate, train, test = als_recommendations(
-        dataset_size, use_gpu, split_test_users_into
+        movielens.ratings,
+        als_config,
+        split_test_users_into,
     )
     print("Collaborative Filtering Hit-Rate:", cf_hitrate)
     content_based_recommender = get_content_based_recommender(
-        dataset_size, split_test_users_into
+        movielens, split_test_users_into
     )
     cold_items, test = get_cold_items(train, test)
     cold_factors = compute_cold_factors(
@@ -139,9 +152,11 @@ def cold_start(
     for item_id, item_factors in cold_factors.items():
         new_item_factors[int(item_id)] = item_factors
     recommender.item_factors = (
-        Matrix(new_item_factors) if use_gpu else new_item_factors
+        Matrix(new_item_factors) if als_config["use_gpu"] else new_item_factors
     )
     print(
         "Hybrid Hit-Rate:",
-        evaluate_implicit_recommender(recommender, sparse_train, test, 3, 10),
+        evaluate_implicit_recommender(
+            recommender, sparse_train, test, split_test_users_into, 10
+        ),
     )
