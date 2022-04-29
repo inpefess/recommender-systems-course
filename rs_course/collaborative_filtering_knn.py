@@ -17,7 +17,7 @@ Collaborative Filtering KNN Recommender
 
 """
 import pandas as pd
-from implicit.nearest_neighbours import TFIDFRecommender
+from implicit.nearest_neighbours import CosineRecommender
 
 from rs_course.utils import (
     evaluate_implicit_recommender,
@@ -44,7 +44,7 @@ def collaborative_filtering_knn(
     sparse_train = pandas_to_scipy(
         train, "rating", "user_id", "item_id", shape
     )
-    recommender = TFIDFRecommender(K=number_of_neigbours)
+    recommender = CosineRecommender(K=number_of_neigbours)
     recommender.fit(sparse_train)
     print(
         evaluate_implicit_recommender(

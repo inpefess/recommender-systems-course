@@ -22,15 +22,16 @@ from rs_metrics import hitrate
 from rs_course.utils import movielens_split
 
 
-def popular_recommender(ratings: pd.DataFrame) -> None:
+def popular_recommender(ratings: pd.DataFrame, warm_users_only: bool) -> None:
     """
-    >>> popular_recommender(getfixture("test_dataset").ratings)
+    >>> popular_recommender(getfixture("test_dataset").ratings, False)
     1.0
 
     :param ratings: a dataset of user-items intersection
+    :param warm_users_only: test on only those users, who were in training set
     :returns:
     """
-    train, test, _ = movielens_split(ratings, 0.95)
+    train, test, _ = movielens_split(ratings, 0.95, warm_users_only)
     top_k = (
         train[["user_id", "item_id"]]
         .groupby("item_id")

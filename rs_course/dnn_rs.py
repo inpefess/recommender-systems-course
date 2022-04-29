@@ -24,7 +24,11 @@ from spotlight.factorization.implicit import ImplicitFactorizationModel
 from spotlight.interactions import Interactions
 
 from rs_course.lightfm_bpr import get_lightfm_predictions
-from rs_course.utils import movielens_split, pandas_to_scipy
+from rs_course.utils import (
+    enumerate_users_and_items,
+    movielens_split,
+    pandas_to_scipy,
+)
 
 
 def dnn_recommender(
@@ -54,6 +58,7 @@ def dnn_recommender(
     :param dataset_size: a size of MovieLens dataset to use
     :returns: hitrate@10
     """
+    enumerate_users_and_items(ratings)
     train, test, shape = movielens_split(ratings, 0.95, True)
     train_sparse = pandas_to_scipy(
         train, "rating", "user_id", "item_id", shape

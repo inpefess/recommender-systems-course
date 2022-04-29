@@ -16,11 +16,10 @@ Content-based item2item KNN Recommender
 =======================================
 
 """
-from implicit.nearest_neighbours import ItemItemRecommender, TFIDFRecommender
+from implicit.nearest_neighbours import CosineRecommender, ItemItemRecommender
 from rs_datasets import MovieLens
 
 from rs_course.utils import (
-    enumerate_users_and_items,
     evaluate_implicit_recommender,
     get_sparse_item_features,
     movielens_split,
@@ -38,14 +37,12 @@ def get_content_based_recommender(
 
     :param movielens: a MovieLens dataset
     """
-    ratings = movielens.ratings
-    enumerate_users_and_items(ratings)
-    train, test, shape = movielens_split(ratings, 0.95, True)
+    train, test, shape = movielens_split(movielens.ratings, 0.95, True)
     sparse_train = pandas_to_scipy(
         train, "rating", "user_id", "item_id", shape
     )
-    item_features, _ = get_sparse_item_features(movielens, ratings)
-    recommender = TFIDFRecommender()
+    item_features, _ = get_sparse_item_features(movielens, movielens.ratings)
+    recommender = CosineRecommender()
     recommender.fit(item_features.T)
     print(
         "Content-Based Hit-Rate:",
