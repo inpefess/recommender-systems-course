@@ -1,0 +1,55 @@
+version: 2.1
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/python:3.8.13
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "poetry.lock" }}
+      - run:
+          name: install dependencies
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install -U pip
+            pip install -U wheel setuptools poetry
+            poetry install
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "poetry.lock" }}
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
+            pytest --cov rs_course --cov-report xml --cov-fail-under=95\
+                   --junit-xml test-results/rs_course.xml rs_course
+      - run:
+          name: run linters
+          command: |
+            . venv/bin/activate
+            pycodestyle --max-doc-length 10000 --ignore E203,E501,W503\
+                        rs_course
+            pylint --rcfile=.pylintrc rs_course
+      - run:
+          name: run type checks
+          command: |
+            . venv/bin/activate
+            mypy --config-file mypy.ini rs_course
+      - run:
+          name: upload data to codecov
+          command: |
+            bash <(curl -s https://codecov.io/bash) -X gcov -X coveragepy
+      - store_artifacts:
+          path: build
+      - store_test_results:
+          path: test-results
+
+workflows:
+  main:
+    jobs:
+      - build-and-test

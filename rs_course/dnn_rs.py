@@ -16,44 +16,54 @@ DNN Recommender Example
 =======================
 
 """
-import torch
+from typing import Any, Dict
 
-if torch.cuda.is_available():
-    torch.cuda.current_device()
-
-from rs_datasets import MovieLens
+import pandas as pd
 from rs_metrics import hitrate
 from spotlight.factorization.implicit import ImplicitFactorizationModel
 from spotlight.interactions import Interactions
 
 from rs_course.lightfm_bpr import get_lightfm_predictions
-from rs_course.utils import movielens_split, pandas_to_scipy
+from rs_course.utils import (
+    enumerate_users_and_items,
+    movielens_split,
+    pandas_to_scipy,
+)
 
 
-def dnn_recommender(dataset_size: str, use_gpu: bool, verbose: bool) -> None:
+def dnn_recommender(
+    ratings: pd.DataFrame, model_config: Dict[str, Any], verbose: bool
+) -> float:
     """
     >>> import os
-    >>> dnn_recommender("small", os.environ.get("TEST_ON_GPU", False), False)
-    0...
+    >>> model_config = {
+    ...     "embedding_dim": 2,
+    ...     "batch_size": 2,
+    ...     "use_cuda": os.environ.get("TEST_ON_GPU", False),
+    ...     "loss": "bpr",
+    ...     "n_iter": 1,
+    ...     "num_negative_samples": 1,
+    ...     "random_state": 0,
+    ... }
+    >>> test_ratings = getfixture("test_dataset").ratings
+    >>> isinstance(
+    ...     dnn_recommender(test_ratings, model_config, False),
+    ...     float
+    ... )
+    True
 
+    :param ratings: a dataset of user-items intersection
+    :param model_config: a dict of ``ImplicitFactorizationModel`` arguments
+    :param verbose: print diagnostic info during training
     :param dataset_size: a size of MovieLens dataset to use
-    :param use_gpu: whether to use GPU or not
-    :param verbose: whether to print training log
+    :returns: hitrate@10
     """
-    movielens = MovieLens(dataset_size)
-    train, test, shape = movielens_split(movielens.ratings, 0.95, True)
+    enumerate_users_and_items(ratings)
+    train, test, shape = movielens_split(ratings, 0.95, True)
     train_sparse = pandas_to_scipy(
         train, "rating", "user_id", "item_id", shape
     )
-    recommender = ImplicitFactorizationModel(
-        embedding_dim=128,
-        batch_size=2**18,
-        use_cuda=use_gpu,
-        loss="bpr",
-        n_iter=15,
-        num_negative_samples=1,
-        random_state=0,
-    )
+    recommender = ImplicitFactorizationModel(**model_config)
     recommender.fit(
         Interactions(
             user_ids=train.user_id.values,
@@ -71,4 +81,4 @@ def dnn_recommender(dataset_size: str, use_gpu: bool, verbose: bool) -> None:
         10,
         min(test["user_id"].unique().size, 1000),
     )
-    print(hitrate(test, pred))
+    return hitrate(test, pred)

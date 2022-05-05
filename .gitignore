@@ -16,3 +16,5 @@ ltximg/
 flycheck_*.*
 .coverage*
 build/
+.cache*
+__pycache__/

@@ -17,21 +17,21 @@ Popular (not Personalised) Recommender
 
 """
 import pandas as pd
-from rs_datasets import MovieLens
 from rs_metrics import hitrate
 
 from rs_course.utils import movielens_split
 
 
-def popular_recommender(dataset_size: str) -> None:
+def popular_recommender(ratings: pd.DataFrame, warm_users_only: bool) -> None:
     """
-    >>> popular_recommender("small")
-    0.5555555555555556
+    >>> popular_recommender(getfixture("test_dataset").ratings, False)
+    1.0
 
-    :param dataset_size: a size of MovieLens dataset to use
+    :param ratings: a dataset of user-items intersection
+    :param warm_users_only: test on only those users, who were in training set
+    :returns:
     """
-    movielens = MovieLens(dataset_size)
-    train, test, _ = movielens_split(movielens.ratings, 0.95)
+    train, test, _ = movielens_split(ratings, 0.95, warm_users_only)
     top_k = (
         train[["user_id", "item_id"]]
         .groupby("item_id")

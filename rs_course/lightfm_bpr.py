@@ -22,7 +22,6 @@ from typing import Any, Dict, List
 import numpy as np
 import pandas as pd
 from lightfm import LightFM
-from rs_datasets import MovieLens
 from rs_metrics import hitrate
 from scipy.sparse import csr_matrix
 from tqdm import tqdm
@@ -83,25 +82,40 @@ def get_lightfm_predictions(
     return pred
 
 
-def lightfm_recommender(dataset_size: str) -> None:
+def lightfm_recommender(
+    ratings: pd.DataFrame,
+    model_config: Dict[str, Any],
+    training_config: Dict[str, Any],
+    split_test_users_into: int,
+) -> None:
     """
-    >>> lightfm_recommender("small")
-    0.1
+    >>> model_config = {
+    ...     "no_components": 2,
+    ...     "loss": "bpr",
+    ...     "learning_rate": 0.01,
+    ...     "random_state": 0
+    ... }
+    >>> training_config = {"epochs": 1, "verbose": False}
+    >>> test_ratings = getfixture("test_dataset").ratings
+    >>> lightfm_recommender(test_ratings, model_config, training_config, 1)
+    1.0
 
-    :param dataset_size: a size of MovieLens dataset to use
+    :param ratings: a dataset of user-items intersection
+    :param model_config: a dict of ``LightFM`` arguments
+    :param training_config: a dict of ``fit_partial`` arguments
+    :param split_test_users_into: split ``test`` by users into several chunks
+        to fit into memory
+    :returns:
     """
-    movielens = MovieLens(dataset_size)
-    train_data, test_data, shape = movielens_split(
-        movielens.ratings, 0.95, True
-    )
+    train_data, test_data, shape = movielens_split(ratings, 0.95, True)
     sparse_train = pandas_to_scipy(
         train_data, "rating", "user_id", "item_id", shape
     )
-    model = LightFM(
-        no_components=100, loss="bpr", learning_rate=0.01, random_state=0
-    )
+    model = LightFM(**model_config)
     model.fit_partial(
-        sparse_train, num_threads=os.cpu_count(), epochs=15, verbose=True
+        sparse_train, num_threads=os.cpu_count(), **training_config
     )
-    pred = get_lightfm_predictions(model, sparse_train, test_data, 10, 3)
+    pred = get_lightfm_predictions(
+        model, sparse_train, test_data, 10, split_test_users_into
+    )
     print(hitrate(test_data, pred))
