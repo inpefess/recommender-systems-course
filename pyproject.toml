@@ -8,6 +8,8 @@ readme = "README.rst"
 classifiers=[
 	"Programming Language :: Python :: 3.7",
 	"Programming Language :: Python :: 3.8",
+	"Programming Language :: Python :: 3.9",
+	"Programming Language :: Python :: 3.10",
 	"License :: OSI Approved :: Apache Software License",
 	"Operating System :: OS Independent",
 	"Intended Audience :: Science/Research",
@@ -20,15 +22,15 @@ classifiers=[
 include = ["rs_course/py.typed"]
 
 [tool.poetry.dependencies]
-python = ">= 3.7.1, <3.9"
+python = ">= 3.7.1, <3.11"
 rs-datasets = "*"
 rs-metrics = "*"
 pandas = "*"
 lightfm = "*"
 torch = "*"
 implicit = "*"
-spotlight = {git="https://github.com/maciejkula/spotlight.git", branch="v0.1.6"}
 vowpalwabbit = "*"
+recbole = "*"
 
 [tool.poetry.dev-dependencies]
 pylint = "*"
