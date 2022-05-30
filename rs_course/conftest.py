@@ -25,14 +25,12 @@ from rs_datasets import MovieLens
 from rs_course.utils import filter_users_and_items
 
 
-@fixture
-def test_dataset() -> MovieLens:
-    """
-    :returns: a tiny MovieLens-like dataset for unit-tests
-    """
+def _get_test_dataset(
+    min_items_per_user: int, min_users_per_item: int
+) -> MovieLens:
     movielens = MovieLens("small")
     movielens.ratings = filter_users_and_items(
-        MovieLens("small").ratings, 1000, 200
+        MovieLens("small").ratings, min_items_per_user, min_users_per_item
     )
     filtered_items = movielens.ratings["item_id"].unique()
     movielens.items = movielens.items[
@@ -42,3 +40,19 @@ def test_dataset() -> MovieLens:
         movielens.tags["item_id"].isin(filtered_items)
     ]
     return movielens
+
+
+@fixture
+def test_dataset() -> MovieLens:
+    """
+    :returns: a tiny MovieLens-like dataset for unit-tests
+    """
+    return _get_test_dataset(1000, 200)
+
+
+@fixture
+def recbole_test_data() -> MovieLens:
+    """
+    :returns: a tiny MovieLens-like dataset for ``recbole`` test
+    """
+    return _get_test_dataset(400, 100)

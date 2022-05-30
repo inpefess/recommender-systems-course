@@ -21,6 +21,7 @@ from typing import Any, Dict, List
 
 import numpy as np
 import pandas as pd
+import torch
 from lightfm import LightFM
 from rs_metrics import hitrate
 from scipy.sparse import csr_matrix
@@ -60,10 +61,24 @@ def get_lightfm_predictions(
                 num_threads=os.cpu_count(),
             ).reshape(test_users_part.shape[0], item_ids.shape[0])
         else:
-            raw_weights_part = recommender.predict(
-                np.repeat(test_users_part, item_ids.shape[0]),
-                np.tile(item_ids, test_users_part.shape[0]),
-            ).reshape(test_users_part.shape[0], item_ids.shape[0])
+            raw_weights_part = (
+                recommender.predict(
+                    {
+                        "user_id": torch.tensor(
+                            np.repeat(test_users_part, item_ids.shape[0]),
+                            dtype=torch.int32,
+                        ),
+                        "item_id": torch.tensor(
+                            np.tile(item_ids, test_users_part.shape[0]),
+                            dtype=torch.int32,
+                        ),
+                    }
+                )
+                .cpu()
+                .detach()
+                .numpy()
+                .reshape(test_users_part.shape[0], item_ids.shape[0])
+            )
         no_train_weights = np.where(
             (sparse_train[test_users_part].toarray() > 0),
             0.0,

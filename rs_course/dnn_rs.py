@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Boris Shminke
+# Copyright 2022 Boris Shminke
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,12 +16,17 @@ DNN Recommender Example
 =======================
 
 """
+import os
+import shutil
 from typing import Any, Dict
 
 import pandas as pd
+from recbole.config import Config
+from recbole.data import data_preparation
+from recbole.data.dataset import Dataset
+from recbole.model.general_recommender import ConvNCF
+from recbole.trainer import Trainer
 from rs_metrics import hitrate
-from spotlight.factorization.implicit import ImplicitFactorizationModel
-from spotlight.interactions import Interactions
 
 from rs_course.lightfm_bpr import get_lightfm_predictions
 from rs_course.utils import (
@@ -31,31 +36,79 @@ from rs_course.utils import (
 )
 
 
+def prepare_recbole_data(
+    data_name: str, dataframe: pd.DataFrame, config: Config
+) -> Dataset:
+    """
+    creates a directory and writes an interactions 'Atomic File' there
+    Attention! The directory ``data_name`` will be removed no questions asked
+
+    :param data_name: a name for the folder and the main file
+    :param dataframe: a Pandas dataframe to convert to
+        ``recbole``'s Atomic Files
+    :param config: a ``recbole`` config
+    :returns:
+    """
+    shutil.rmtree(data_name, ignore_errors=True)
+    os.mkdir(data_name)
+    dataframe.columns = pd.Index(
+        [
+            "user_id:token",
+            "item_id:token",
+            "label:float",
+            "timestamp:float",
+        ]
+    )
+    dataframe.to_csv(
+        os.path.join(".", data_name, f"{data_name}.inter"),
+        sep="\t",
+        index=False,
+    )
+    return Dataset(config)
+
+
+def get_recbole_trained_recommender(
+    config: Config, train_data: Dataset
+) -> ConvNCF:
+    """
+    :param config: a ``recbole`` config
+    :param train_data: a training dataset in the ``recbole`` format
+    :returns: a trained model ready for evaluation
+    """
+    train_data, valid_data, _ = data_preparation(config, train_data)
+    recommender = ConvNCF(config, train_data.dataset)
+    Trainer(config, recommender).fit(
+        train_data, valid_data, saved=True, show_progress=True
+    )
+    recommender.eval()
+    return recommender
+
+
 def dnn_recommender(
-    ratings: pd.DataFrame, model_config: Dict[str, Any], verbose: bool
+    ratings: pd.DataFrame, model_config: Dict[str, Any]
 ) -> float:
     """
     >>> import os
     >>> model_config = {
-    ...     "embedding_dim": 2,
-    ...     "batch_size": 2,
-    ...     "use_cuda": os.environ.get("TEST_ON_GPU", False),
-    ...     "loss": "bpr",
-    ...     "n_iter": 1,
-    ...     "num_negative_samples": 1,
-    ...     "random_state": 0,
+    ...     "data_path": ".",
+    ...     "eval_args": {
+    ...         "group_by": None,
+    ...         "order": "RO",
+    ...         "split": {"RS": [0.95, 0.05, 0.0]},
+    ...         "mode": "pop10",
+    ...     },
+    ...     "epochs": 1,
+    ...     "use_gpu": os.environ.get("TEST_ON_GPU", False),
     ... }
-    >>> test_ratings = getfixture("test_dataset").ratings
+    >>> test_ratings = getfixture("recbole_test_data").ratings
     >>> isinstance(
-    ...     dnn_recommender(test_ratings, model_config, False),
+    ...     dnn_recommender(test_ratings, model_config),
     ...     float
     ... )
     True
 
     :param ratings: a dataset of user-items intersection
-    :param model_config: a dict of ``ImplicitFactorizationModel`` arguments
-    :param verbose: print diagnostic info during training
-    :param dataset_size: a size of MovieLens dataset to use
+    :param model_config: ``config_dict`` of a ``recbole`` model
     :returns: hitrate@10
     """
     enumerate_users_and_items(ratings)
@@ -63,16 +116,14 @@ def dnn_recommender(
     train_sparse = pandas_to_scipy(
         train, "rating", "user_id", "item_id", shape
     )
-    recommender = ImplicitFactorizationModel(**model_config)
-    recommender.fit(
-        Interactions(
-            user_ids=train.user_id.values,
-            item_ids=train.item_id.values,
-            weights=train.rating.values,
-            num_users=shape[0],
-            num_items=shape[1],
-        ),
-        verbose=verbose,
+    recbole_config = Config(
+        model="ConvNCF",
+        dataset="train",
+        config_dict=model_config,
+    )
+    recbole_train = prepare_recbole_data("train", train, recbole_config)
+    recommender = get_recbole_trained_recommender(
+        recbole_config, recbole_train
     )
     pred = get_lightfm_predictions(
         recommender,
