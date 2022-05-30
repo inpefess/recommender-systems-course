@@ -46,7 +46,7 @@ def als_recommendations(
     ...      "iterations": 1,
     ... }
     >>> _, _, hitrate, _, _ = als_recommendations(
-    ...      ratings=getfixture("test_dataset").ratings,
+    ...      ratings=getfixture("test_dataset").ratings,  # noqa: F821
     ...      model_params=model_params,
     ...      split_test_users_into=1,
     ... )

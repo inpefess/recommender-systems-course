@@ -113,7 +113,7 @@ def lightfm_recommender(
     ...     "random_state": 0
     ... }
     >>> training_config = {"epochs": 1, "verbose": False}
-    >>> test_ratings = getfixture("test_dataset").ratings
+    >>> test_ratings = getfixture("test_dataset").ratings  # noqa: F821
     >>> lightfm_recommender(test_ratings, model_config, training_config, 1)
     1.0
 

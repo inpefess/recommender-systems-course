@@ -1,0 +1,6 @@
+[flake8]
+doctests = True
+ignore =
+    E203,
+    E501,
+    W503

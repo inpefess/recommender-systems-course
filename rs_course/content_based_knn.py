@@ -32,7 +32,10 @@ def get_content_based_recommender(
 ) -> ItemItemRecommender:
     """
     main function of the module
-    >>> _ = get_content_based_recommender(getfixture("test_dataset"), 1)
+    >>> _ = get_content_based_recommender(
+    ...     getfixture("test_dataset"),  # noqa: F821
+    ...     1
+    ... )
     Content-Based Hit-Rate: 1.0
 
     :param movielens: a MovieLens dataset
