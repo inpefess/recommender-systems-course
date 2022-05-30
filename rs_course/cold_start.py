@@ -117,7 +117,7 @@ def cold_start(
     ...      "use_gpu": os.environ.get("TEST_ON_GPU", False),
     ...      "random_state": 0
     ... }
-    >>> cold_start(getfixture("test_dataset"), als_config, 1)
+    >>> cold_start(getfixture("test_dataset"), als_config, 1)  # noqa: F821
     Collaborative Filtering Hit-Rate: 1.0
     Content-Based Hit-Rate: 1.0
     cold items percentage in test: 0.0

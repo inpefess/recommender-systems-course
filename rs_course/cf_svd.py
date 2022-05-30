@@ -74,7 +74,7 @@ def pure_svd_recommender(
 ) -> None:
     """
     >>> pure_svd_recommender(
-    ...     getfixture("test_dataset").ratings,
+    ...     getfixture("test_dataset").ratings,  # noqa: F821
     ...     1,
     ...     {"n_components": 1, "random_state": 0},
     ... )

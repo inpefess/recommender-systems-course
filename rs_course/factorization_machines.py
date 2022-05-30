@@ -53,7 +53,7 @@ def factorization_machines(
     factorization machine example
 
     >>> factorization_machines(
-    ...     getfixture("test_dataset").ratings, 1, False, 0, 1
+    ...     getfixture("test_dataset").ratings, 1, False, 0, 1  # noqa: F821
     ... )
     0.8333333333333333
 

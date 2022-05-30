@@ -55,3 +55,44 @@ src_paths = ["rs_course"]
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--doctest-modules --cov rs_course --cov-report term-missing --cov-report xml --cov-fail-under=99 --junit-xml test-results/rs_course.xml"
+testpaths = ["rs_course"]
+doctest_optionflags = "NORMALIZE_WHITESPACE ELLIPSIS"
+
+[tool.pylint.master]
+disable = "bad-continuation"
+# disable=bad-continuation,wrong-import-position
+
+[tool.pylint.format]
+ignore-long-lines = "(https://)"
+max-line-length = 79
+
+[tool.pylint.design]
+max-statements = 10
+
+[tool.pylint.typecheck]
+generated-members = ["torch"]
+
+[tool.mypy]
+show_error_codes = true
+incremental = false
+disable_error_code = "no-redef"
+
+[[tool.mypy.overrides]]
+module = [
+    "recbole.*",
+    "implicit.*",
+    "tqdm.*",
+    "lightfm.*",
+    "rs_datasets.*",
+    "rs_metrics.*",
+    "sklearn.*",
+    "scipy.*",
+    "vowpalwabbit.*",
+    "SLIM.*",
+]
+
+ignore_missing_imports = true

@@ -24,7 +24,10 @@ from rs_course.utils import movielens_split
 
 def popular_recommender(ratings: pd.DataFrame, warm_users_only: bool) -> None:
     """
-    >>> popular_recommender(getfixture("test_dataset").ratings, False)
+    >>> popular_recommender(
+    ...     getfixture("test_dataset").ratings,  # noqa: F821
+    ...     False
+    ... )
     1.0
 
     :param ratings: a dataset of user-items intersection

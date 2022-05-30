@@ -32,7 +32,11 @@ def collaborative_filtering_knn(
     split_test_users_into: int,
 ) -> None:
     """
-    >>> collaborative_filtering_knn(getfixture("test_dataset").ratings, 7, 1)
+    >>> collaborative_filtering_knn(
+    ...     getfixture("test_dataset").ratings,  # noqa: F821
+    ...     7,
+    ...     1
+    ... )
     1.0
 
     :param ratings: a dataset of user-items intersection

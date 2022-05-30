@@ -106,7 +106,7 @@ def dnn_recommender(
     ...     "epochs": 1,
     ...     "use_gpu": os.environ.get("TEST_ON_GPU", False),
     ... }
-    >>> test_ratings = getfixture("recbole_test_data").ratings
+    >>> test_ratings = getfixture("recbole_test_data").ratings  # noqa: F821
     >>> isinstance(
     ...     dnn_recommender(test_ratings, model_config),
     ...     float

@@ -19,9 +19,13 @@ import torch
 
 if torch.cuda.is_available():
     torch.cuda.current_device()
+# pylint: disable=wrong-import-position
 from pytest import fixture
+
+# pylint: disable=wrong-import-position
 from rs_datasets import MovieLens
 
+# pylint: disable=wrong-import-position
 from rs_course.utils import filter_users_and_items
 
 
