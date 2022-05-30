@@ -99,10 +99,10 @@ def dnn_recommender(
     ...         "split": {"RS": [0.95, 0.05, 0.0]},
     ...         "mode": "pop10",
     ...     },
-    ...     "embedding_size": 128,
-    ...     "cnn_channels": [1, 32],
-    ...     "cnn_kernels": [4],
-    ...     "cnn_strides": [4],
+    ...     "embedding_size": 1,
+    ...     "cnn_channels": [1, 1],
+    ...     "cnn_kernels": [1],
+    ...     "cnn_strides": [1],
     ...     "epochs": 1,
     ...     "use_gpu": os.environ.get("TEST_ON_GPU", False),
     ... }
@@ -119,6 +119,41 @@ def dnn_recommender(
     """
     enumerate_users_and_items(ratings)
     train, test, shape = movielens_split(ratings, 0.95, True)
+    # here we want train set to include all the items and users
+    # we achieve that by filling the histories for user and item
+    # with indices 0 (not a real ID); we need that because ``recbole``
+    # enumerates users and items itself
+    # also we add a pair (1, 1) explicitly, because ``recbole`` doesn't
+    # want any user to have all items in a history. That spoils a real user
+    # history (1 is a real ID). but hopefully not much
+    train = train.append(
+        [
+            {
+                "user_id": 0,
+                "item_id": i,
+                "rating": 1,
+                "timestamp": 1,
+            }
+            for i in range(2, shape[1])
+        ]
+        + [
+            {
+                "user_id": 1,
+                "item_id": 1,
+                "rating": 1,
+                "timestamp": 1,
+            }
+        ]
+        + [
+            {
+                "user_id": i,
+                "item_id": 0,
+                "rating": 1,
+                "timestamp": 1,
+            }
+            for i in range(2, shape[1])
+        ]
+    )
     train_sparse = pandas_to_scipy(
         train, "rating", "user_id", "item_id", shape
     )
