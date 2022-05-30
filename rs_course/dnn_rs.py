@@ -76,7 +76,9 @@ def get_recbole_trained_recommender(
     :returns: a trained model ready for evaluation
     """
     train_data, valid_data, _ = data_preparation(config, train_data)
-    recommender = ConvNCF(config, train_data.dataset)
+    recommender = ConvNCF(config, train_data.dataset).to(
+        config.final_config_dict["device"]
+    )
     Trainer(config, recommender).fit(
         train_data, valid_data, saved=True, show_progress=True
     )
@@ -97,6 +99,10 @@ def dnn_recommender(
     ...         "split": {"RS": [0.95, 0.05, 0.0]},
     ...         "mode": "pop10",
     ...     },
+    ...     "embedding_size": 128,
+    ...     "cnn_channels": [1, 32],
+    ...     "cnn_kernels": [4],
+    ...     "cnn_strides": [4],
     ...     "epochs": 1,
     ...     "use_gpu": os.environ.get("TEST_ON_GPU", False),
     ... }
