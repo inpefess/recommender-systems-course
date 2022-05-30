@@ -67,10 +67,12 @@ def get_lightfm_predictions(
                         "user_id": torch.tensor(
                             np.repeat(test_users_part, item_ids.shape[0]),
                             dtype=torch.int32,
+                            device=recommender.device,
                         ),
                         "item_id": torch.tensor(
                             np.tile(item_ids, test_users_part.shape[0]),
                             dtype=torch.int32,
+                            device=recommender.device,
                         ),
                     }
                 )
