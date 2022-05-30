@@ -55,4 +55,4 @@ def recbole_test_data() -> MovieLens:
     """
     :returns: a tiny MovieLens-like dataset for ``recbole`` test
     """
-    return _get_test_dataset(400, 100)
+    return _get_test_dataset(100, 100)
