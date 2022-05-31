@@ -1,0 +1,9 @@
+venv*/
+doc/build/
+__pycache__/
+dist/
+.*
+coverage.xml
+log_tensorboard/
+train/
+notebooks/
