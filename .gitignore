@@ -18,3 +18,4 @@ flycheck_*.*
 build/
 .cache*
 __pycache__/
+coverage.xml
