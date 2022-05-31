@@ -46,12 +46,12 @@ def _get_dnn_weights(
                 {
                     "user_id": torch.tensor(
                         np.repeat(test_users_part, test_items_part.shape[0]),
-                        dtype=torch.int32,
+                        dtype=torch.long,
                         device=recommender.device,
                     ),
                     "item_id": torch.tensor(
                         np.tile(test_items_part, test_users_part.shape[0]),
-                        dtype=torch.int32,
+                        dtype=torch.long,
                         device=recommender.device,
                     ),
                 }
