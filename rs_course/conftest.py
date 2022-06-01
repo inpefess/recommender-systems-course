@@ -46,15 +46,18 @@ def _get_test_dataset(
     return movielens
 
 
-@fixture
+@fixture(autouse=True, scope="session")
 def test_dataset() -> MovieLens:
     """
+    >>> getfixture("recbole_test_data")  # noqa: F821
+    <...>
+
     :returns: a tiny MovieLens-like dataset for unit-tests
     """
     return _get_test_dataset(1000, 200)
 
 
-@fixture
+@fixture(autouse=True, scope="session")
 def recbole_test_data() -> MovieLens:
     """
     :returns: a tiny MovieLens-like dataset for ``recbole`` test
