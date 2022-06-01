@@ -19,15 +19,31 @@ import torch
 if torch.cuda.is_available():
     print(f"CUDA device index: {torch.cuda.current_device()}")
 
+# pylint: disable=wrong-import-position
 from rs_datasets import MovieLens
 
+# pylint: disable=wrong-import-position
 from rs_course.cf_als import als_recommendations
+
+# pylint: disable=wrong-import-position
 from rs_course.cf_svd import pure_svd_recommender
+
+# pylint: disable=wrong-import-position
 from rs_course.cold_start import cold_start
+
+# pylint: disable=wrong-import-position
 from rs_course.collaborative_filtering_knn import collaborative_filtering_knn
+
+# pylint: disable=wrong-import-position
 from rs_course.content_based_knn import get_content_based_recommender
+
+# pylint: disable=wrong-import-position
 from rs_course.dnn_rs import dnn_recommender
+
+# pylint: disable=wrong-import-position
 from rs_course.lightfm_bpr import lightfm_recommender
+
+# pylint: disable=wrong-import-position
 from rs_course.popular import popular_recommender
 
 movielens = MovieLens("25m")
@@ -56,15 +72,15 @@ print(
     dnn_recommender(
         movielens.ratings,
         {
-            "embedding_dim": 128,
-            "batch_size": 2**18,
-            "use_cuda": True,
-            "loss": "bpr",
-            "n_iter": 15,
-            "num_negative_samples": 1,
-            "random_state": 0,
+            "data_path": ".",
+            "eval_step": 0,
+            "epochs": 1,
+            "train_batch_size": 2**13,
+            "mf_embedding_size": 128,
+            "mlp_embedding_size": 128,
+            "mlp_hidden_size": [128],
+            "use_gpu": True,
         },
-        True,
     )
-)  # 0.39818731117824774
+)  # ~0.05
 cold_start(movielens, als_config, 1)  # 0.5166163141993958
