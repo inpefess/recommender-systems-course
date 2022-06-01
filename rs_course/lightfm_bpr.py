@@ -30,6 +30,40 @@ from tqdm import tqdm
 from rs_course.utils import movielens_split, pandas_to_scipy
 
 
+def _get_dnn_weights(
+    sparse_train: csr_matrix,
+    split_test_users_into: int,
+    recommender,
+    test_users_part: np.ndarray,
+) -> np.ndarray:
+    test_items_parts = np.array_split(
+        np.arange(sparse_train.shape[1]), split_test_users_into
+    )
+    raw_weights_small_parts = []
+    for test_items_part in test_items_parts:
+        raw_weights_small_parts.append(
+            recommender.predict(
+                {
+                    "user_id": torch.tensor(
+                        np.repeat(test_users_part, test_items_part.shape[0]),
+                        dtype=torch.int32,
+                        device=recommender.device,
+                    ),
+                    "item_id": torch.tensor(
+                        np.tile(test_items_part, test_users_part.shape[0]),
+                        dtype=torch.int32,
+                        device=recommender.device,
+                    ),
+                }
+            )
+            .cpu()
+            .detach()
+            .numpy()
+            .reshape(test_users_part.shape[0], test_items_part.shape[0])
+        )
+    return np.hstack(raw_weights_small_parts)
+
+
 def get_lightfm_predictions(
     recommender: Any,
     sparse_train: csr_matrix,
@@ -61,25 +95,11 @@ def get_lightfm_predictions(
                 num_threads=os.cpu_count(),
             ).reshape(test_users_part.shape[0], item_ids.shape[0])
         else:
-            raw_weights_part = (
-                recommender.predict(
-                    {
-                        "user_id": torch.tensor(
-                            np.repeat(test_users_part, item_ids.shape[0]),
-                            dtype=torch.int32,
-                            device=recommender.device,
-                        ),
-                        "item_id": torch.tensor(
-                            np.tile(item_ids, test_users_part.shape[0]),
-                            dtype=torch.int32,
-                            device=recommender.device,
-                        ),
-                    }
-                )
-                .cpu()
-                .detach()
-                .numpy()
-                .reshape(test_users_part.shape[0], item_ids.shape[0])
+            raw_weights_part = _get_dnn_weights(
+                sparse_train,
+                split_test_users_into,
+                recommender,
+                test_users_part,
             )
         no_train_weights = np.where(
             (sparse_train[test_users_part].toarray() > 0),
