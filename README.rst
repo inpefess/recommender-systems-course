@@ -43,18 +43,25 @@ Topics
 How to Install
 ==============
 
-On `Google Colab <https://colab.research.google.com/>`__
----------------------------------------------------------
-The installation takes under one minute:
+In a Docker container
+----------------------
+
+First, install `Docker <https://docs.docker.com/get-docker/>`__ on your system.
 
 .. code:: sh
 
-   pip install git+https://github.com/inpefess/recommender-systems-course.git
+   docker build -t recommender-systems-course https://github.com/inpefess/recommender-systems-course.git
+   docker run -it --rm -p 8888:8888 recommender-systems-course jupyter-lab --ip=0.0.0.0 --port=8888
 
 On Linux
 ---------
 
-Installation process is the same as on Colab.
+This includes `Google Colab <https://colab.research.google.com/>`__
+and `Kaggle <https://www.kaggle.com/docs/notebooks>`__.
+
+.. code:: sh
+
+   pip install git+https://github.com/inpefess/recommender-systems-course.git
 
 
 On Windows
