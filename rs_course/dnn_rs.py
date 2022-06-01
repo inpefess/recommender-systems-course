@@ -146,7 +146,7 @@ def dnn_recommender(
                 "rating": 1,
                 "timestamp": 1,
             }
-            for i in range(2, shape[1])
+            for i in range(2, shape[0])
         ]
     )
     train_sparse = pandas_to_scipy(
