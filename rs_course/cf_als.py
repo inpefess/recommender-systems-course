@@ -38,6 +38,7 @@ def als_recommendations(
     csr_matrix, AlternatingLeastSquares, float, pd.DataFrame, pd.DataFrame
 ]:
     """
+    >>> ratings = getfixture("test_dataset").ratings  # noqa: F821
     >>> import os
     >>> model_params = {
     ...      "factors": 1,
@@ -46,7 +47,7 @@ def als_recommendations(
     ...      "iterations": 1,
     ... }
     >>> _, _, hitrate, _, _ = als_recommendations(
-    ...      ratings=getfixture("test_dataset").ratings,  # noqa: F821
+    ...      ratings=ratings,
     ...      model_params=model_params,
     ...      split_test_users_into=1,
     ... )
