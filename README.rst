@@ -43,17 +43,48 @@ Topics
 How to Install
 ==============
 
-On `Google Colab <https://colab.research.google.com/>`__ installation
-takes 3-5 minutes:
+On `Google Colab <https://colab.research.google.com/>`__
+---------------------------------------------------------
+The installation takes under one minute:
 
 .. code:: sh
 
    pip install git+https://github.com/inpefess/recommender-systems-course.git
 
-On Linux. Installation process is the same as on Colab.
+On Linux
+---------
 
-On Windows. Use `Windows Subsystem for Linux (WSL) <https://docs.microsoft.com/en-us/windows/wsl/about#main>`__
-On WSL, proceed as on any Linux. Anaconda support is comming in next releases.
+Installation process is the same as on Colab.
 
-On macOS. Should be in principle installable in a similar way as on
+
+On Windows
+-----------
+
+There are two options:
+
+#. Use `Windows Subsystem for Linux (WSL) <https://docs.microsoft.com/en-us/windows/wsl/about#main>`__
+   
+   On WSL, proceed as on any Linux.
+
+#. Use `Anaconda <https://conda.io/en/latest/miniconda.html>`__
+
+   .. code:: sh
+
+      # get the source
+      git clone git+https://github.com/inpefess/recommender-systems-course.git
+      cd recommender-systems-course
+      # use a provided environment configuration
+      conda env create -n recommender-systems-course -f environment.yml python=3.8
+      conda activate recommender-systems-course
+      # test that all installed correctly
+      pytest
+      # add ``rs_course`` package
+      pip install .
+      # start working
+      jupyter lab
+
+On macOS
+---------
+
+Should be in principle installable in a similar way as on
 Linux, but not tested.
