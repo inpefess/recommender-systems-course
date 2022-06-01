@@ -7,3 +7,4 @@ coverage.xml
 log_tensorboard/
 train/
 notebooks/
+test-results/

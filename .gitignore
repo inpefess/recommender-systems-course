@@ -19,3 +19,4 @@ build/
 .cache*
 __pycache__/
 coverage.xml
+test-results/
