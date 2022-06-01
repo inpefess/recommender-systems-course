@@ -93,12 +93,7 @@ def dnn_recommender(
     >>> import os
     >>> model_config = {
     ...     "data_path": ".",
-    ...     "eval_args": {
-    ...         "group_by": None,
-    ...         "order": "RO",
-    ...         "split": {"RS": [0.95, 0.05, 0.0]},
-    ...         "mode": "pop10",
-    ...     },
+    ...     "eval_step": 0,
     ...     "embedding_size": 1,
     ...     "cnn_channels": [1, 1],
     ...     "cnn_kernels": [1],
@@ -171,6 +166,6 @@ def dnn_recommender(
         train_sparse,
         test,
         10,
-        min(test["user_id"].unique().size, 1000),
+        min(test["user_id"].unique().size, 100),
     )
     return hitrate(test, pred)
