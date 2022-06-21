@@ -128,14 +128,18 @@ def get_sparse_item_features(
     genres_data["user_id"] = -1
     genres_data["tag"] = genres_data.genres.str.split("|")
     genres_tags = genres_data.explode("tag")[["item_id", "user_id", "tag"]]
-    all_tags = movielens.tags.drop(columns=["timestamp"]).append(genres_tags)
+    all_tags = pd.concat(
+        [movielens.tags.drop(columns=["timestamp"]), genres_tags]
+    )
     agg_tags = (
         all_tags[all_tags.item_id.isin(ratings.item_id)]
         .groupby(["item_id", "tag"])
         .count()
         .reset_index()
     )
-    agg_tags["tag_id"] = agg_tags.tag.astype("category").cat.codes
+    agg_tags["tag_id"] = agg_tags.tag.astype(  # type: ignore
+        "category"  # type: ignore
+    ).cat.codes  # type: ignore
     return (
         pandas_to_scipy(
             agg_tags,

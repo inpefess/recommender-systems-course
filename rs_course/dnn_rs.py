@@ -121,32 +121,37 @@ def dnn_recommender(
     # also we add a pair (1, 1) explicitly, because ``recbole`` doesn't
     # want any user to have all items in a history. That spoils a real user
     # history (1 is a real ID). but hopefully not much
-    train = train.append(
+    train = pd.concat(
         [
-            {
-                "user_id": 0,
-                "item_id": i,
-                "rating": 1,
-                "timestamp": 1,
-            }
-            for i in range(2, shape[1])
-        ]
-        + [
-            {
-                "user_id": 1,
-                "item_id": 1,
-                "rating": 1,
-                "timestamp": 1,
-            }
-        ]
-        + [
-            {
-                "user_id": i,
-                "item_id": 0,
-                "rating": 1,
-                "timestamp": 1,
-            }
-            for i in range(2, shape[0])
+            train,
+            pd.DataFrame(
+                [
+                    {
+                        "user_id": 0,
+                        "item_id": i,
+                        "rating": 1,
+                        "timestamp": 1,
+                    }
+                    for i in range(2, shape[1])
+                ]
+                + [
+                    {
+                        "user_id": 1,
+                        "item_id": 1,
+                        "rating": 1,
+                        "timestamp": 1,
+                    }
+                ]
+                + [
+                    {
+                        "user_id": i,
+                        "item_id": 0,
+                        "rating": 1,
+                        "timestamp": 1,
+                    }
+                    for i in range(2, shape[0])
+                ]
+            ),
         ]
     )
     train_sparse = pandas_to_scipy(
