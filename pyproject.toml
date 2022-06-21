@@ -65,10 +65,6 @@ addopts = """--doctest-modules --cov rs_course --cov-report term-missing
 testpaths = ["rs_course"]
 doctest_optionflags = "NORMALIZE_WHITESPACE ELLIPSIS"
 
-[tool.pylint.master]
-disable = "bad-continuation"
-# disable=bad-continuation,wrong-import-position
-
 [tool.pylint.format]
 ignore-long-lines = "(https://)"
 max-line-length = 79
@@ -98,3 +94,24 @@ module = [
     "SLIM.*",
 ]
 ignore_missing_imports = true
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+isolated_build = True
+envlist = py37,py38,py39,py310
+
+[testenv]
+deps =
+    pip >= 21.1.2
+    pytest-cov
+    flake8
+    pylint
+    mypy
+    data-science-types
+commands =
+    flake8 rs_course
+    pylint rs_course
+    mypy rs_course
+    pytest
+"""

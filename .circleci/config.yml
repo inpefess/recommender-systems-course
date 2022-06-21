@@ -1,43 +1,16 @@
 version: 2.1
-
 jobs:
   build-and-test:
     docker:
-      - image: cimg/python:3.8.13
-    working_directory: ~/repo
+      - image: inpefess/multipython
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "poetry.lock" }}
       - run:
-          name: install dependencies
+          name: use tox
           command: |
-            python -m venv venv
-            . venv/bin/activate
-            pip install -U pip
-            pip install -U wheel setuptools poetry
-            poetry install
-      - save_cache:
-          paths:
-            - ./venv
-          key: v1-dependencies-{{ checksum "poetry.lock" }}
-      - run:
-          name: run tests
-          command: |
-            . venv/bin/activate
-            pytest
-      - run:
-          name: run linters
-          command: |
-            . venv/bin/activate
-            flake8 rs_course scripts
-            pylint rs_course scripts
-      - run:
-          name: run type checks
-          command: |
-            . venv/bin/activate
-            mypy rs_course scripts
+            pip install -U tox
+            pyenv local 3.7.13 3.8.13 3.9.13 3.10.4
+            tox
       - run:
           name: upload data to codecov
           command: |
@@ -46,7 +19,6 @@ jobs:
           path: build
       - store_test_results:
           path: test-results
-
 workflows:
   main:
     jobs:
