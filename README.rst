@@ -1,3 +1,20 @@
+..
+  Copyright 2021-2022 Boris Shminke
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+|CircleCI|\ |AppveyorCI|\ |Documentation Status|\ |codecov|
+
 ============================
 Building Recommender Systems
 ============================
@@ -95,3 +112,12 @@ On macOS
 
 Should be in principle installable in a similar way as on
 Linux, but not tested.
+
+.. |CircleCI| image:: https://circleci.com/gh/inpefess/recommender-systems-course.svg?style=svg
+   :target: https://circleci.com/gh/inpefess/recommender-systems-course
+.. |Documentation Status| image:: https://readthedocs.org/projects/recommender-systems-course/badge/?version=latest
+   :target: https://recommender-systems-course.readthedocs.io/en/latest/?badge=latest
+.. |codecov| image:: https://codecov.io/gh/inpefess/recommender-systems-course/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/inpefess/recommender-systems-course
+.. |AppveyorCI| image:: https://ci.appveyor.com/api/projects/status/32ws0aamvby6mc6o?svg=true
+   :target: https://ci.appveyor.com/project/inpefess/recommender-systems-course
