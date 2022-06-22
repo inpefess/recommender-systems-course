@@ -4,7 +4,6 @@ venv/
 *.pyc
 .ipynb_checkpoints/
 *.csr
-*.txt
 *.aux
 *.log
 *.nav
