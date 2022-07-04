@@ -20,24 +20,13 @@ import vowpalwabbit
 from sklearn.metrics import roc_auc_score
 from vowpalwabbit.dftovw import DFtoVW
 
-from rs_course.utils import movielens_split
+from rs_course.utils import enumerate_users_and_items, movielens_split
 
 
 def _prepare_data(ratings: pd.DataFrame) -> None:
-    ratings["user_id"] = (
-        ratings["user_id"]
-        .astype(pd.CategoricalDtype())  # type: ignore
-        .cat.codes
-        + 1
-    )
-    ratings["item_id"] = (
-        ratings["item_id"]
-        .astype(pd.CategoricalDtype())  # type: ignore
-        .cat.codes
-        + 1
-    )
+    enumerate_users_and_items(ratings)
     ratings["label"] = 1
-    ratings["label"] = ratings["label"].where(
+    ratings["label"] = ratings["label"].where(  # type: ignore
         ratings["rating"] > 3, -1  # type: ignore
     )
 

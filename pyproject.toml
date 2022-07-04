@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rs_course"
-version = "0.0.5"
+version = "0.0.6"
 description = "A course on Recommender Systems"
 authors = ["Boris Shminke <boris@shminke.ml>"]
 license = "Apache-2.0"
@@ -9,7 +9,6 @@ classifiers=[
 	"Programming Language :: Python :: 3.7",
 	"Programming Language :: Python :: 3.8",
 	"Programming Language :: Python :: 3.9",
-	"Programming Language :: Python :: 3.10",
 	"License :: OSI Approved :: Apache Software License",
 	"Operating System :: OS Independent",
 	"Intended Audience :: Science/Research",
@@ -22,7 +21,7 @@ classifiers=[
 include = ["rs_course/py.typed"]
 
 [tool.poetry.dependencies]
-python = ">= 3.7.1, <3.11"
+python = ">= 3.7.1, <3.10"
 rs-datasets = "*"
 rs-metrics = "*"
 pandas = "*"
@@ -31,7 +30,6 @@ torch = "*"
 implicit = "*"
 vowpalwabbit = "*"
 recbole = "*"
-protobuf = "<3.21"
 
 [tool.poetry.dev-dependencies]
 pylint = "*"
@@ -45,6 +43,8 @@ pytest-cov = "*"
 sphinx-rtd-theme = "*"
 sphinx-autodoc-typehints = "*"
 ipywidgets = "*"
+tox = "*"
+tbump = "*"
 
 [tool.black]
 line-length=79
@@ -64,10 +64,6 @@ addopts = """--doctest-modules --cov rs_course --cov-report term-missing
 """
 testpaths = ["rs_course"]
 doctest_optionflags = "NORMALIZE_WHITESPACE ELLIPSIS"
-
-[tool.pylint.master]
-disable = "bad-continuation"
-# disable=bad-continuation,wrong-import-position
 
 [tool.pylint.format]
 ignore-long-lines = "(https://)"
@@ -98,3 +94,49 @@ module = [
     "SLIM.*",
 ]
 ignore_missing_imports = true
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+isolated_build = True
+envlist = py37,py38,py39
+
+[testenv]
+deps =
+    pytest-cov
+    flake8
+    pylint
+    mypy
+    data-science-types
+commands =
+    flake8 rs_course
+    pylint rs_course
+    mypy rs_course
+    pytest
+"""
+
+[tool.tbump]
+github_url = "https://github.com/inpfess/recommender-systems-course/"
+
+[tool.tbump.version]
+current = "0.0.6"
+regex = '''
+  (?P<major>\d+)
+  \.
+  (?P<minor>\d+)
+  \.
+  (?P<patch>\d+)
+  '''
+
+[tool.tbump.git]
+message_template = "Bump to {new_version}"
+tag_template = "v{new_version}"
+
+[[tool.tbump.file]]
+src = "rs_course/__init__.py"
+
+[[tool.tbump.file]]
+src = "pyproject.toml"
+
+[[tool.tbump.file]]
+src = "doc/source/conf.py"
