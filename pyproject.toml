@@ -44,6 +44,7 @@ sphinx-rtd-theme = "*"
 sphinx-autodoc-typehints = "*"
 ipywidgets = "*"
 tox = "*"
+tbump = "*"
 
 [tool.black]
 line-length=79
@@ -113,3 +114,29 @@ commands =
     mypy rs_course
     pytest
 """
+
+[tool.tbump]
+github_url = "https://github.com/inpfess/recommender-systems-course/"
+
+[tool.tbump.version]
+current = "0.0.5"
+regex = '''
+  (?P<major>\d+)
+  \.
+  (?P<minor>\d+)
+  \.
+  (?P<patch>\d+)
+  '''
+
+[tool.tbump.git]
+message_template = "Bump to {new_version}"
+tag_template = "v{new_version}"
+
+[[tool.tbump.file]]
+src = "rs_course/__init__.py"
+
+[[tool.tbump.file]]
+src = "pyproject.toml"
+
+[[tool.tbump.file]]
+src = "doc/source/conf.py"
