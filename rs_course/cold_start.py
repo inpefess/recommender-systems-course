@@ -46,7 +46,8 @@ def get_cold_items(
     """
     Get a list of cold items.
 
-    :param dataset_size: a size of MovieLens dataset to use
+    :param train: train set
+    :param test: test set
     :returns: a list of cold items and the test set
     """
     cold_items = list(
@@ -135,7 +136,6 @@ def cold_start(
     :param movielens: MovieLens dataset
     :param als_config: collaborative model training params
     :param split_test_users_into: a number of chunks for testing
-    :returns:
     """
     sparse_train, recommender, cf_hitrate, train, test = als_recommendations(
         movielens.ratings,

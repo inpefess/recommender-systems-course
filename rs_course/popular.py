@@ -35,7 +35,6 @@ def popular_recommender(ratings: pd.DataFrame, warm_users_only: bool) -> None:
 
     :param ratings: a dataset of user-items intersection
     :param warm_users_only: test on only those users, who were in training set
-    :returns:
     """
     train, test, _ = movielens_split(ratings, 0.95, warm_users_only)
     top_k = (

@@ -37,6 +37,7 @@ def pandas_to_scipy(
     """
     Transform pandas dataset with three columns to a sparse matrix.
 
+    :param pd_dataframe: an input ``pandas`` dataframe
     :param data_name: column name with values for the matrix cells
     :param rows_name: column name with row numbers of the cells
     :param cols_name: column name with column numbers of the cells
@@ -122,7 +123,8 @@ def get_sparse_item_features(
     """
     Extract item features from ``tags`` dataset.
 
-    :param movielens: full MovieLens dataset
+    :param movielens: full MovieLens dataset (only for tags and genres)
+    :param ratings: ratings data (can differ from one in ``MovieLens`` object)
     :returns: sparse matrix and a `pandas` DataFrame of item features (tags)
     """
     genres_data = movielens.items[["item_id", "genres"]]
@@ -154,7 +156,11 @@ def get_sparse_item_features(
 
 
 def enumerate_users_and_items(ratings: pd.DataFrame) -> None:
-    """Inplace change of user and item IDs into numbers."""
+    """
+    Inplace change of user and item IDs into numbers.
+
+    :param ratings: ratings dataset
+    """
     ratings["user_id"] = (
         ratings.user_id.astype("category").cat.codes + 1  # type: ignore
     )
@@ -173,6 +179,7 @@ def filter_users_and_items(
 
     (and only users who rated at least ``min_items_per_user``)
 
+    :param ratings: ratings dataset
     :param min_items_per_user: if ``None`` then don't filter
     :param min_users_per_item: if ``None`` then don't filter
     :returns: filtered ratings dataset

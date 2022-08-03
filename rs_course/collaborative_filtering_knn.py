@@ -45,7 +45,6 @@ def collaborative_filtering_knn(
     :param ratings: a dataset of user-items intersection
     :param number_of_neigbours: number of neigbours for KNN
     :param split_test_users_into: a number of chunks for testing
-    :returns:
     """
     train, test, shape = movielens_split(ratings, 0.95, True)
     sparse_train = pandas_to_scipy(

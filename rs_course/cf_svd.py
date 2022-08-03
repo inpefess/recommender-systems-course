@@ -86,7 +86,6 @@ def pure_svd_recommender(
     :param ratings: a dataset of user-items intersection
     :param split_test_users_into: a number of chunks for testing
     :param model_config: a dict of ``TruncatedSVD`` argument for model training
-    :returns:
     """
     train, test, shape = movielens_split(ratings, 0.95, True)
     sparse_train = pandas_to_scipy(

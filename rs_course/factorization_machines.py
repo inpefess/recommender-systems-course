@@ -47,7 +47,7 @@ def factorization_machines(
     ... )
     0.8333333333333333
 
-    :param dataset_size: a size of MovieLens dataset to use
+    :param ratings: ratings dataset
     :param num_epochs: number of epochs (``vw`` passes)
     :param verbose: an opposite of ``vw`` quiet
     :param seed: a random seed for testing

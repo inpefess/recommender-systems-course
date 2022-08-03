@@ -145,7 +145,6 @@ def lightfm_recommender(
     :param training_config: a dict of ``fit_partial`` arguments
     :param split_test_users_into: split ``test`` by users into several chunks
         to fit into memory
-    :returns:
     """
     train_data, test_data, shape = movielens_split(ratings, 0.95, True)
     sparse_train = pandas_to_scipy(
