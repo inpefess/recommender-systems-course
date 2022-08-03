@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Sphinx configuration."""
 # pylint: disable-all
 # -- Path setup --------------------------------------------------------------
 
@@ -29,7 +30,7 @@ sys.path.insert(0, os.path.abspath("../.."))
 
 project = "recommender-systems-course"
 copyright = "2022, Boris Shminke"
-version = "0.0.6"
+version = "0.0.7"
 author = "Boris Shminke"
 
 # -- General configuration ---------------------------------------------------

@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# noqa: D205, D400
 """
 LightFM BPR Example
 ===================
@@ -72,7 +73,7 @@ def get_lightfm_predictions(
     split_test_users_into: int,
 ) -> Dict[int, List[int]]:
     """
-    get recommendations given a LightFM recommender
+    Get recommendations given a LightFM recommender.
 
     :param recommender: a recommender
     :param sparse_train: a ``scr_matrix`` representation of the train data
@@ -126,6 +127,8 @@ def lightfm_recommender(
     split_test_users_into: int,
 ) -> None:
     """
+    Build a BPR model from ``lightfm``.
+
     >>> model_config = {
     ...     "no_components": 2,
     ...     "loss": "bpr",
@@ -142,7 +145,6 @@ def lightfm_recommender(
     :param training_config: a dict of ``fit_partial`` arguments
     :param split_test_users_into: split ``test`` by users into several chunks
         to fit into memory
-    :returns:
     """
     train_data, test_data, shape = movielens_split(ratings, 0.95, True)
     sparse_train = pandas_to_scipy(

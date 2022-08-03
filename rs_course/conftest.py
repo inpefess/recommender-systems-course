@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# noqa: D205, D400
 """
 Fixtures for unit tests
 =======================
@@ -49,6 +50,8 @@ def _get_test_dataset(
 @fixture(autouse=True, scope="session")
 def test_dataset() -> MovieLens:
     """
+    Get a test dataset fixture.
+
     >>> getfixture("recbole_test_data")  # noqa: F821
     <...>
 
@@ -60,6 +63,8 @@ def test_dataset() -> MovieLens:
 @fixture(autouse=True, scope="session")
 def recbole_test_data() -> MovieLens:
     """
+    Get a test dataset fixture for ``recbole``.
+
     :returns: a tiny MovieLens-like dataset for ``recbole`` test
     """
     return _get_test_dataset(100, 100)

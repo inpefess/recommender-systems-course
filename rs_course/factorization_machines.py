@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# noqa: D205, D400
 """
 Factorization Machines with Vowpal Wabbit
 =========================================
@@ -39,14 +40,14 @@ def factorization_machines(
     bit_precision: int,
 ) -> float:
     """
-    factorization machine example
+    Build a factorization machine.
 
     >>> factorization_machines(
     ...     getfixture("test_dataset").ratings, 1, False, 0, 1  # noqa: F821
     ... )
     0.8333333333333333
 
-    :param dataset_size: a size of MovieLens dataset to use
+    :param ratings: ratings dataset
     :param num_epochs: number of epochs (``vw`` passes)
     :param verbose: an opposite of ``vw`` quiet
     :param seed: a random seed for testing

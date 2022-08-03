@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# noqa: D205, D400
 """
 DNN Recommender Example
 =======================
@@ -40,7 +41,8 @@ def prepare_recbole_data(
     data_name: str, dataframe: pd.DataFrame, config: Config
 ) -> Dataset:
     """
-    creates a directory and writes an interactions 'Atomic File' there
+    Create a directory and write an interactions 'Atomic File' there.
+
     Attention! The directory ``data_name`` will be removed no questions asked
 
     :param data_name: a name for the folder and the main file
@@ -71,6 +73,8 @@ def get_recbole_trained_recommender(
     config: Config, train_data: Dataset
 ) -> ConvNCF:
     """
+    Train a DNN recommender from RecBole.
+
     :param config: a ``recbole`` config
     :param train_data: a training dataset in the ``recbole`` format
     :returns: a trained model ready for evaluation
@@ -90,6 +94,8 @@ def dnn_recommender(
     ratings: pd.DataFrame, model_config: Dict[str, Any]
 ) -> float:
     """
+    Build a RecBole model.
+
     >>> import os
     >>> model_config = {
     ...     "data_path": ".",
@@ -120,7 +126,7 @@ def dnn_recommender(
     # enumerates users and items itself
     # also we add a pair (1, 1) explicitly, because ``recbole`` doesn't
     # want any user to have all items in a history. That spoils a real user
-    # history (1 is a real ID). but hopefully not much
+    # history (1 is a real ID), but hopefully not much
     train = pd.concat(
         [
             train,

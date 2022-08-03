@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# noqa: D205, D400
 """
 Collaborative Filtering KNN Recommender
 =======================================
@@ -32,6 +33,8 @@ def collaborative_filtering_knn(
     split_test_users_into: int,
 ) -> None:
     """
+    Build a collaborative filtering KNN model.
+
     >>> collaborative_filtering_knn(
     ...     getfixture("test_dataset").ratings,  # noqa: F821
     ...     7,
@@ -42,7 +45,6 @@ def collaborative_filtering_knn(
     :param ratings: a dataset of user-items intersection
     :param number_of_neigbours: number of neigbours for KNN
     :param split_test_users_into: a number of chunks for testing
-    :returns:
     """
     train, test, shape = movielens_split(ratings, 0.95, True)
     sparse_train = pandas_to_scipy(

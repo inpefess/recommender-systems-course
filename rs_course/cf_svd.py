@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# noqa: D205, D400
 """
 Pure SVD Recommender
 ====================
@@ -35,7 +36,7 @@ def get_svd_recs(
     split_test_users_into: int,
 ) -> Dict[int, List[int]]:
     """
-    get recommendations given a truncated SVD decomposition
+    Get recommendations given a truncated SVD decomposition.
 
     :param recommender: a truncated SVD decomposition
     :param sparse_train: a ``scr_matrix`` representation of the train data
@@ -73,6 +74,8 @@ def pure_svd_recommender(
     model_config: Dict[str, Any],
 ) -> None:
     """
+    Build an example of SVD recommender based on ``sklearn``.
+
     >>> pure_svd_recommender(
     ...     getfixture("test_dataset").ratings,  # noqa: F821
     ...     1,
@@ -83,7 +86,6 @@ def pure_svd_recommender(
     :param ratings: a dataset of user-items intersection
     :param split_test_users_into: a number of chunks for testing
     :param model_config: a dict of ``TruncatedSVD`` argument for model training
-    :returns:
     """
     train, test, shape = movielens_split(ratings, 0.95, True)
     sparse_train = pandas_to_scipy(

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rs_course"
-version = "0.0.6"
+version = "0.0.7"
 description = "A course on Recommender Systems"
 authors = ["Boris Shminke <boris@shminke.ml>"]
 license = "Apache-2.0"
@@ -45,6 +45,7 @@ sphinx-autodoc-typehints = "*"
 ipywidgets = "*"
 tox = "*"
 tbump = "*"
+pydocstyle = "*"
 
 [tool.black]
 line-length=79
@@ -64,6 +65,20 @@ addopts = """--doctest-modules --cov rs_course --cov-report term-missing
 """
 testpaths = ["rs_course"]
 doctest_optionflags = "NORMALIZE_WHITESPACE ELLIPSIS"
+
+[tool.pylint.MASTER]
+load-plugins = [
+    "pylint.extensions.docparams",
+    "pylint.extensions.mccabe",
+    "pylint.extensions.set_membership",
+]
+
+[tool.pylint.parameter_documentation]
+accept-no-param-doc = false
+accept-no-raise-doc = false
+accept-no-return-doc = true
+accept-no-yields-doc = false
+default-docstring-type = "sphinx"
 
 [tool.pylint.format]
 ignore-long-lines = "(https://)"
@@ -108,10 +123,12 @@ deps =
     pylint
     mypy
     data-science-types
+    pydocstyle
 commands =
-    flake8 rs_course
-    pylint rs_course
-    mypy rs_course
+    flake8 rs_course scripts
+    pydocstyle rs_course scripts
+    pylint rs_course scripts
+    mypy rs_course scripts
     pytest
 """
 
@@ -119,7 +136,7 @@ commands =
 github_url = "https://github.com/inpfess/recommender-systems-course/"
 
 [tool.tbump.version]
-current = "0.0.6"
+current = "0.0.7"
 regex = '''
   (?P<major>\d+)
   \.

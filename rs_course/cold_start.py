@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# noqa: D205, D400
 """
 Cold Start Recommender Example
 ==============================
@@ -43,7 +44,10 @@ def get_cold_items(
     train: pd.DataFrame, test: pd.DataFrame
 ) -> Tuple[List[int], pd.DataFrame]:
     """
-    :param dataset_size: a size of MovieLens dataset to use
+    Get a list of cold items.
+
+    :param train: train set
+    :param test: test set
     :returns: a list of cold items and the test set
     """
     cold_items = list(
@@ -76,6 +80,7 @@ def compute_cold_factors(
     recommender: AlternatingLeastSquares,
 ) -> Dict[int, np.ndarray]:
     """
+    Compute latent factors for cold items.
 
     :param cold_items: a list of cold items to which compute factors
     :param content_based_recommender: a content-based recommender to induce new
@@ -111,6 +116,8 @@ def cold_start(
     split_test_users_into: int,
 ) -> None:
     """
+    Build and test an ALS-based recommender with cold start.
+
     >>> import os
     >>> als_config = {
     ...      "factors": 1,
@@ -129,7 +136,6 @@ def cold_start(
     :param movielens: MovieLens dataset
     :param als_config: collaborative model training params
     :param split_test_users_into: a number of chunks for testing
-    :returns:
     """
     sparse_train, recommender, cf_hitrate, train, test = als_recommendations(
         movielens.ratings,
