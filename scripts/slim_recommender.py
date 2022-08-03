@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# noqa: D205, D400
 """
 SLIM recommender
 ================
@@ -29,6 +30,8 @@ from rs_course.utils import movielens_split
 
 def slim_recommender(dataset_size: str) -> None:
     """
+    Build a SLIM recommender.
+
     >>> slim_recommender("small")
     Learning takes...
     0.55

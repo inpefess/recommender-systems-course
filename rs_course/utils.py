@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# noqa: D205, D400
 """
 Useful Function for the Whole Course
 ====================================
@@ -34,7 +35,7 @@ def pandas_to_scipy(
     shape: Tuple[int, int],
 ) -> csr_matrix:
     """
-    transform pandas dataset with three columns to a sparse matrix
+    Transform pandas dataset with three columns to a sparse matrix.
 
     :param data_name: column name with values for the matrix cells
     :param rows_name: column name with row numbers of the cells
@@ -57,7 +58,7 @@ def movielens_split(
     warm_users_only: bool = False,
 ) -> Tuple[csr_matrix, pd.DataFrame, Tuple[int, int]]:
     """
-    split ``ratings`` dataset to train and test
+    Split ``ratings`` dataset to train and test.
 
     :param ratings: ratings dataset from MovieLens
     :param train_percentage: percentage of data to put into training dataset
@@ -87,7 +88,7 @@ def evaluate_implicit_recommender(
     top_k: int,
 ) -> float:
     """
-    compute hit-rate for a recommender from ``implicit`` package
+    Compute hit-rate for a recommender from ``implicit`` package.
 
     :param recommender: some recommender from ``implicit`` package
     :param train: sparse matrix of ratings
@@ -119,7 +120,7 @@ def get_sparse_item_features(
     movielens: MovieLens, ratings: pd.DataFrame
 ) -> Tuple[csr_matrix, pd.DataFrame]:
     """
-    extract item features from ``tags`` dataset
+    Extract item features from ``tags`` dataset.
 
     :param movielens: full MovieLens dataset
     :returns: sparse matrix and a `pandas` DataFrame of item features (tags)
@@ -153,7 +154,7 @@ def get_sparse_item_features(
 
 
 def enumerate_users_and_items(ratings: pd.DataFrame) -> None:
-    """inplace change of user and item IDs into numbers"""
+    """Inplace change of user and item IDs into numbers."""
     ratings["user_id"] = (
         ratings.user_id.astype("category").cat.codes + 1  # type: ignore
     )
@@ -168,8 +169,9 @@ def filter_users_and_items(
     min_users_per_item: Optional[int],
 ) -> pd.DataFrame:
     """
-    leave only items with at least ``min_users_per_item`` users who rated them
-    and only users who rated at least ``min_items_per_user``
+    Leave only items with at least ``min_users_per_item`` users who rated them.
+
+    (and only users who rated at least ``min_items_per_user``)
 
     :param min_items_per_user: if ``None`` then don't filter
     :param min_users_per_item: if ``None`` then don't filter

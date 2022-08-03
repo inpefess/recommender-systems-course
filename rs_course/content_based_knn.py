@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# noqa: D205, D400
 """
 Content-based item2item KNN Recommender
 =======================================
@@ -31,7 +32,8 @@ def get_content_based_recommender(
     movielens: MovieLens, split_test_users_into: int
 ) -> ItemItemRecommender:
     """
-    main function of the module
+    Build a content-based recommender.
+
     >>> _ = get_content_based_recommender(
     ...     getfixture("test_dataset"),  # noqa: F821
     ...     1

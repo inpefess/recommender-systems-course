@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# noqa: D205, D400
 """
 Collaborative Filtering ALS Recommender
 =======================================
@@ -38,6 +39,8 @@ def als_recommendations(
     csr_matrix, AlternatingLeastSquares, float, pd.DataFrame, pd.DataFrame
 ]:
     """
+    Build an ALS recommender from ``implicit``.
+
     >>> ratings = getfixture("test_dataset").ratings  # noqa: F821
     >>> import os
     >>> model_params = {

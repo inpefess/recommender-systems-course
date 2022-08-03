@@ -7,6 +7,7 @@ make clean html coverage
 cat build/coverage/python.txt
 cd ..
 flake8 ${PACKAGE_NAME} scripts
+pydocstyle ${PACKAGE_NAME} scripts
 pylint ${PACKAGE_NAME} scripts
 mypy ${PACKAGE_NAME} scripts
 export TEST_ON_GPU=

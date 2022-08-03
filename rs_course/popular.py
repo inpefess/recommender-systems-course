@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# noqa: D205, D400
 """
 Popular (not Personalised) Recommender
 ======================================
@@ -24,6 +25,8 @@ from rs_course.utils import movielens_split
 
 def popular_recommender(ratings: pd.DataFrame, warm_users_only: bool) -> None:
     """
+    Build a non-personalised recommender based on item popularity.
+
     >>> popular_recommender(
     ...     getfixture("test_dataset").ratings,  # noqa: F821
     ...     False

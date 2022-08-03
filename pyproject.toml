@@ -45,6 +45,7 @@ sphinx-autodoc-typehints = "*"
 ipywidgets = "*"
 tox = "*"
 tbump = "*"
+pydocstyle = "*"
 
 [tool.black]
 line-length=79
@@ -108,10 +109,12 @@ deps =
     pylint
     mypy
     data-science-types
+    pydocstyle
 commands =
-    flake8 rs_course
-    pylint rs_course
-    mypy rs_course
+    flake8 rs_course scripts
+    pydocstyle rs_course scripts
+    pylint rs_course scripts
+    mypy rs_course scripts
     pytest
 """
 
