@@ -29,7 +29,7 @@ from rs_course.utils import (
 
 def collaborative_filtering_knn(
     ratings: pd.DataFrame,
-    number_of_neigbours: int,
+    number_of_neighbours: int,
     split_test_users_into: int,
 ) -> None:
     """
@@ -43,14 +43,14 @@ def collaborative_filtering_knn(
     1.0
 
     :param ratings: a dataset of user-items intersection
-    :param number_of_neigbours: number of neigbours for KNN
+    :param number_of_neighbours: number of neighbours for KNN
     :param split_test_users_into: a number of chunks for testing
     """
     train, test, shape = movielens_split(ratings, 0.95, True)
     sparse_train = pandas_to_scipy(
         train, "rating", "user_id", "item_id", shape
     )
-    recommender = CosineRecommender(K=number_of_neigbours)
+    recommender = CosineRecommender(K=number_of_neighbours)
     recommender.fit(sparse_train)
     print(
         evaluate_implicit_recommender(

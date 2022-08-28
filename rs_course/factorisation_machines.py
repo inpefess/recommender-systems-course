@@ -13,7 +13,7 @@
 # limitations under the License.
 # noqa: D205, D400
 """
-Factorization Machines with Vowpal Wabbit
+Factorisation Machines with Vowpal Wabbit
 =========================================
 """
 import pandas as pd
@@ -32,7 +32,7 @@ def _prepare_data(ratings: pd.DataFrame) -> None:
     )
 
 
-def factorization_machines(
+def factorisation_machines(
     ratings: pd.DataFrame,
     num_epochs: int,
     verbose: bool,
@@ -40,9 +40,9 @@ def factorization_machines(
     bit_precision: int,
 ) -> float:
     """
-    Build a factorization machine.
+    Build a factorisation machine.
 
-    >>> factorization_machines(
+    >>> factorisation_machines(
     ...     getfixture("test_dataset").ratings, 1, False, 0, 1  # noqa: F821
     ... )
     0.8333333333333333

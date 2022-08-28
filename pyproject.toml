@@ -46,6 +46,7 @@ ipywidgets = "*"
 tox = "*"
 tbump = "*"
 pydocstyle = "*"
+pyenchant = "*"
 
 [tool.black]
 line-length=79
@@ -90,6 +91,10 @@ max-statements = 10
 [tool.pylint.typecheck]
 generated-members = ["torch"]
 
+[tool.pylint.spelling]
+spelling-dict = "en_GB"
+spelling-private-dict-file = "spelling.dict"
+
 [tool.mypy]
 show_error_codes = true
 incremental = false
@@ -124,6 +129,7 @@ deps =
     mypy
     data-science-types
     pydocstyle
+    pyenchant
 commands =
     flake8 rs_course scripts
     pydocstyle rs_course scripts
