@@ -130,6 +130,7 @@ deps =
     data-science-types
     pydocstyle
     pyenchant
+    toml
 commands =
     flake8 rs_course scripts
     pydocstyle rs_course scripts
