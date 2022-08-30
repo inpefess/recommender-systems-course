@@ -34,6 +34,7 @@ def get_svd_recs(
     sparse_train: csr_matrix,
     test: pd.DataFrame,
     split_test_users_into: int,
+    top_k: int,
 ) -> Dict[int, List[int]]:
     """
     Get recommendations given a truncated SVD decomposition.
@@ -42,6 +43,7 @@ def get_svd_recs(
     :param sparse_train: a ``scr_matrix`` representation of the train data
     :param test: test data
     :param split_test_users_into: a number of chunks for testing
+    :param top_k: the number of items to recommend
     :returns: recommendations in ``rs_metrics`` compatible format
     """
     user_embeddings = recommender.transform(sparse_train)
@@ -60,8 +62,8 @@ def get_svd_recs(
                 zip(
                     test_part,
                     np.argpartition(  # type: ignore
-                        -no_train_weights, 10, axis=1
-                    )[:, :10],
+                        -no_train_weights, top_k, axis=1
+                    )[:, :top_k],
                 )
             )
         )
@@ -72,6 +74,8 @@ def pure_svd_recommender(
     ratings: pd.DataFrame,
     split_test_users_into: int,
     model_config: Dict[str, Any],
+    top_k: int,
+    train_percentage: float,
 ) -> None:
     """
     Build an example of SVD recommender based on ``sklearn``.
@@ -80,17 +84,26 @@ def pure_svd_recommender(
     ...     getfixture("test_dataset").ratings,  # noqa: F821
     ...     1,
     ...     {"n_components": 1, "random_state": 0},
+    ...     10,
+    ...     0.95
     ... )
     1.0
 
     :param ratings: a dataset of user-items intersection
     :param split_test_users_into: a number of chunks for testing
     :param model_config: a dict of ``TruncatedSVD`` argument for model training
+    :param top_k: number of items to recommend
+    :param train_percentage: percentage of user-item pairs to leave in the
+        training set
     """
-    train, test, shape = movielens_split(ratings, 0.95, True)
+    train_data, test_data, shape = movielens_split(
+        ratings, train_percentage, True
+    )
     sparse_train = pandas_to_scipy(
-        train, "rating", "user_id", "item_id", shape
+        train_data, "rating", "user_id", "item_id", shape
     )
     recommender = TruncatedSVD(**model_config).fit(sparse_train)
-    pred = get_svd_recs(recommender, sparse_train, test, split_test_users_into)
-    print(hitrate(test, pred))
+    pred = get_svd_recs(
+        recommender, sparse_train, test_data, split_test_users_into, top_k
+    )
+    print(hitrate(test_data, pred))
