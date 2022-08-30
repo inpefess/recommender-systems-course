@@ -61,7 +61,7 @@ def als_recommendations(
     >>> print(hit_rate)
     1.0
 
-    :param ratings: a dataset of user-items intersection
+    :param ratings: a dataset of user-items interactions
     :param model_params: ALS training parameters
     :param split_test_users_into: a number of chunks for testing
     :param top_k: the number of items to recommend

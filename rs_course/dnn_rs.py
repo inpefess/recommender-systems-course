@@ -118,7 +118,7 @@ def dnn_recommender(
     ... )
     True
 
-    :param ratings: a dataset of user-items intersection
+    :param ratings: a dataset of user-items interactions
     :param model_config: ``config_dict`` of a ``recbole`` model
     :param split_test_users_into: split ``test`` by users into several chunks
         to fit into memory

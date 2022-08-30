@@ -40,7 +40,7 @@ def popular_recommender(
     ... )
     1.0
 
-    :param ratings: a dataset of user-items intersection
+    :param ratings: a dataset of user-items interactions
     :param warm_users_only: test on only those users, who were in training set
     :param top_k: the number of items to recommend
     :param train_percentage: percentage of user-item pairs to leave in the

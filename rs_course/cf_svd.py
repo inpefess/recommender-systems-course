@@ -89,7 +89,7 @@ def pure_svd_recommender(
     ... )
     1.0
 
-    :param ratings: a dataset of user-items intersection
+    :param ratings: a dataset of user-items interactions
     :param split_test_users_into: a number of chunks for testing
     :param model_config: a dict of ``TruncatedSVD`` argument for model training
     :param top_k: number of items to recommend

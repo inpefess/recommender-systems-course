@@ -46,7 +46,7 @@ def collaborative_filtering_knn(
     ... )
     1.0
 
-    :param ratings: dataset of user-items intersection
+    :param ratings: dataset of user-items interactions
     :param number_of_neighbours: number of neighbours for KNN
     :param split_test_users_into: a number of chunks for testing
     :param top_k: the number of items to recommend
