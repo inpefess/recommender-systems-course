@@ -129,14 +129,14 @@ def cold_start(
     ...     als_config,
     ...     1,
     ...     10,
-    ...     0.95
+    ...     0.08
     ... )
-    Collaborative Filtering Hit-Rate: 1.0
+    Collaborative Filtering Hit-Rate: 0.0
     Content-Based Hit-Rate: 1.0
-    cold items percentage in test: 0.0
-    cold rows percentage in test: 0.0
-    users with cold items percentage in test: 0.0
-    users with no cold items percentage in test: 1.0
+    cold items percentage in test: 1.0
+    cold rows percentage in test: 1.0
+    users with cold items percentage in test: 1.0
+    users with no cold items percentage in test: 0.0
     Hybrid Hit-Rate: 1.0
 
     :param movielens: MovieLens dataset

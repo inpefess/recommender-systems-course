@@ -62,7 +62,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = """--doctest-modules --cov rs_course --cov-report term-missing
-   --cov-report xml --cov-fail-under=95 --junit-xml test-results/rs_course.xml
+   --cov-report xml --cov-fail-under=99 --junit-xml test-results/rs_course.xml
 """
 testpaths = ["rs_course"]
 doctest_optionflags = "NORMALIZE_WHITESPACE ELLIPSIS"
