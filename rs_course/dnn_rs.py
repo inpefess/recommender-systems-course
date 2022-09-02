@@ -91,7 +91,11 @@ def get_recbole_trained_recommender(
 
 
 def dnn_recommender(
-    ratings: pd.DataFrame, model_config: Dict[str, Any]
+    ratings: pd.DataFrame,
+    model_config: Dict[str, Any],
+    split_test_users_into: int,
+    top_k: int,
+    train_percentage: float,
 ) -> float:
     """
     Build a RecBole model.
@@ -109,17 +113,22 @@ def dnn_recommender(
     ... }
     >>> test_ratings = getfixture("recbole_test_data").ratings  # noqa: F821
     >>> isinstance(
-    ...     dnn_recommender(test_ratings, model_config),
+    ...     dnn_recommender(test_ratings, model_config, 100, 10, 0.95),
     ...     float
     ... )
     True
 
-    :param ratings: a dataset of user-items intersection
+    :param ratings: a dataset of user-items interactions
     :param model_config: ``config_dict`` of a ``recbole`` model
-    :returns: hitrate@10
+    :param split_test_users_into: split ``test`` by users into several chunks
+        to fit into memory
+    :param top_k: the number of items to recommend
+    :param train_percentage: percentage of user-item pairs to leave in the
+        training set
+    :returns: hitrate@top_k
     """
     enumerate_users_and_items(ratings)
-    train, test, shape = movielens_split(ratings, 0.95, True)
+    train, test, shape = movielens_split(ratings, train_percentage, True)
     # here we want train set to include all the items and users
     # we achieve that by filling the histories for user and item
     # with indices 0 (not a real ID); we need that because ``recbole``
@@ -176,7 +185,7 @@ def dnn_recommender(
         recommender,
         train_sparse,
         test,
-        10,
-        min(test["user_id"].unique().size, 100),
+        top_k,
+        min(test["user_id"].unique().size, split_test_users_into),
     )
     return hitrate(test, pred)

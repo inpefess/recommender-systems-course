@@ -195,9 +195,9 @@ $$R_{uic}=\sum\limits_{j_u=1}^{r_U}\sum\limits_{j_i=1}^{r_I}\sum\limits_{j_c=1}^
   \item particular case: Tucker decomposition
   \end{itemize}
 \end{frame}
-\section{Factorization Machines}
+\section{Factorisation Machines}
 \begin{frame}
-  \frametitle{Factorization Machines}
+  \frametitle{Factorisation Machines}
   \begin{itemize}
   \item invented by Steffen Rendle in 2010
   \item won several Kaggle competitions
@@ -206,14 +206,14 @@ $$R_{uic}=\sum\limits_{j_u=1}^{r_U}\sum\limits_{j_i=1}^{r_I}\sum\limits_{j_c=1}^
   \end{itemize}
 \end{frame}
 \begin{frame}
-  \frametitle{Factorization Machines: Data}
+  \frametitle{Factorisation Machines: Data}
   \begin{figure}
     \includegraphics[scale=0.17]{fm}
   \end{figure}
   (source: DOI: 10.1109/ICDM.2010.127)
 \end{frame}
 \begin{frame}
-  \frametitle{Factorization Machines: Data}
+  \frametitle{Factorisation Machines: Data}
   \begin{itemize}
   \item user ID and item ID are categorical features
   \item all features are treated equally
@@ -221,7 +221,7 @@ $$R_{uic}=\sum\limits_{j_u=1}^{r_U}\sum\limits_{j_i=1}^{r_I}\sum\limits_{j_c=1}^
   \end{itemize}
 \end{frame}
 \begin{frame}
-  \frametitle{Factorization Machines: Model}
+  \frametitle{Factorisation Machines: Model}
   \begin{exampleblock}  {}$$r\left(x\right)=\omega_0+\sum\limits_{i=1}^n\omega_ix_i+\sum\limits_{i=1}^n\sum\limits_{j=1}^n\omega_{ij}x_ix_j$$
   \end{exampleblock}
   where
@@ -235,19 +235,19 @@ $$R_{uic}=\sum\limits_{j_u=1}^{r_U}\sum\limits_{j_i=1}^{r_I}\sum\limits_{j_c=1}^
   \end{itemize}
 \end{frame}
 \begin{frame}
-  \frametitle{Factorization Machines: More Expressive}
+  \frametitle{Factorisation Machines: More Expressive}
   \begin{exampleblock}  {}$$r\left(x\right)=\omega_0+\sum\limits_{i=1}^n\omega_ix_i+\sum\limits_{i=1}^n\sum\limits_{j=1}^n\omega_{ij}x_ix_j$$
   \end{exampleblock}
   \begin{itemize}
   \item $n$ is extremely large (at least number of items plus number of users)
   \item $r\left(x\right)$ is predicted by a Maclaurin series up to the second term
-  \item (this is similar to a basic matrix factorization model)
+  \item (this is similar to a basic matrix factorisation model)
   \item $\omega_{ij}$ includes not only bilinear (user-item)
   \item but also quadratic elements (item-item and user-user)
   \end{itemize}
 \end{frame}
 \begin{frame}
-  \frametitle{Factorization Machines: Main Idea}
+  \frametitle{Factorisation Machines: Main Idea}
   \begin{exampleblock}  {}$$r\left(x\right)=\omega_0+\sum\limits_{i=1}^n\omega_ix_i+\sum\limits_{i=1}^n\sum\limits_{j=1}^n\omega_{ij}x_ix_j$$
     $$\omega_{ij}=\left<v_i,v_j\right>$$
   \end{exampleblock}
@@ -260,7 +260,7 @@ $$R_{uic}=\sum\limits_{j_u=1}^{r_U}\sum\limits_{j_i=1}^{r_I}\sum\limits_{j_c=1}^
   \end{itemize}
 \end{frame}
 \begin{frame}
-  \frametitle{Factorization Machines: Usage}
+  \frametitle{Factorisation Machines: Usage}
   \begin{itemize}
   \item quadratic features can be a game changer (and can be encoded in a NN)
   \item \href{http://libfm.org/}{\texttt{LibFM}} --- package written by Rendle
@@ -269,7 +269,7 @@ $$R_{uic}=\sum\limits_{j_u=1}^{r_U}\sum\limits_{j_i=1}^{r_I}\sum\limits_{j_c=1}^
   \end{itemize}
 \end{frame}
 \begin{frame}
-  \frametitle{LightFM is not a Factorization Machine!}
+  \frametitle{LightFM is not a Factorisation Machine!}
   \begin{itemize}
   \item in LightFM one have only bilinear (user-item) terms
   \item FM must have quadratic (item-item and user-user) terms
@@ -277,7 +277,7 @@ $$R_{uic}=\sum\limits_{j_u=1}^{r_U}\sum\limits_{j_i=1}^{r_I}\sum\limits_{j_c=1}^
   \end{itemize}
 \end{frame}
 \begin{frame}
-  \frametitle{Factorization Machines: Conclusion}
+  \frametitle{Factorisation Machines: Conclusion}
   \begin{itemize}
   \item hard to beat technique for ranking tasks
   \item powerful but simple idea to implement yourself

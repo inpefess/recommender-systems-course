@@ -29,8 +29,10 @@ from rs_course.utils import (
 
 def collaborative_filtering_knn(
     ratings: pd.DataFrame,
-    number_of_neigbours: int,
+    number_of_neighbours: int,
     split_test_users_into: int,
+    top_k: int,
+    train_percentage: float,
 ) -> None:
     """
     Build a collaborative filtering KNN model.
@@ -38,22 +40,27 @@ def collaborative_filtering_knn(
     >>> collaborative_filtering_knn(
     ...     getfixture("test_dataset").ratings,  # noqa: F821
     ...     7,
-    ...     1
+    ...     1,
+    ...     top_k=10,
+    ...     train_percentage=0.95
     ... )
     1.0
 
-    :param ratings: a dataset of user-items intersection
-    :param number_of_neigbours: number of neigbours for KNN
+    :param ratings: dataset of user-items interactions
+    :param number_of_neighbours: number of neighbours for KNN
     :param split_test_users_into: a number of chunks for testing
+    :param top_k: the number of items to recommend
+    :param train_percentage: percentage of user-item pairs to leave in the
+        training set
     """
-    train, test, shape = movielens_split(ratings, 0.95, True)
+    train, test, shape = movielens_split(ratings, train_percentage, True)
     sparse_train = pandas_to_scipy(
         train, "rating", "user_id", "item_id", shape
     )
-    recommender = CosineRecommender(K=number_of_neigbours)
+    recommender = CosineRecommender(K=number_of_neighbours)
     recommender.fit(sparse_train)
     print(
         evaluate_implicit_recommender(
-            recommender, sparse_train, test, split_test_users_into, 10
+            recommender, sparse_train, test, split_test_users_into, top_k
         )
     )

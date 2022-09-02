@@ -54,7 +54,7 @@ Topics
 * Lecture 6. Deep learning in RS. Metric learning, two towers, deep
   and wide architecture
 * Lecture 7. Cold-start problem. CB2CF, MaxVol
-* Lecture 8. Advanced topics in RS: context-aware RS, factorization
+* Lecture 8. Advanced topics in RS: context-aware RS, factorisation
   machines
 
 How to Install

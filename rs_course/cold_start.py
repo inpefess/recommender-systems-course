@@ -17,7 +17,7 @@ Cold Start Recommender Example
 ==============================
 
 """
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 
 import numpy as np
 import pandas as pd
@@ -40,9 +40,7 @@ from rs_course.content_based_knn import (
 )
 
 
-def get_cold_items(
-    train: pd.DataFrame, test: pd.DataFrame
-) -> Tuple[List[int], pd.DataFrame]:
+def get_cold_items(train: pd.DataFrame, test: pd.DataFrame) -> List[int]:
     """
     Get a list of cold items.
 
@@ -71,7 +69,7 @@ def get_cold_items(
         test[~test.item_id.isin(cold_items)].user_id.unique().size
         / test.user_id.unique().size,
     )
-    return cold_items, test
+    return cold_items
 
 
 def compute_cold_factors(
@@ -114,6 +112,8 @@ def cold_start(
     movielens: MovieLens,
     als_config: Dict[str, Any],
     split_test_users_into: int,
+    top_k: int,
+    train_percentage: float,
 ) -> None:
     """
     Build and test an ALS-based recommender with cold start.
@@ -124,31 +124,41 @@ def cold_start(
     ...      "use_gpu": os.environ.get("TEST_ON_GPU", False),
     ...      "random_state": 0
     ... }
-    >>> cold_start(getfixture("test_dataset"), als_config, 1)  # noqa: F821
-    Collaborative Filtering Hit-Rate: 1.0
+    >>> cold_start(
+    ...     getfixture("test_dataset"),  # noqa: F821
+    ...     als_config,
+    ...     1,
+    ...     10,
+    ...     0.08
+    ... )
+    Collaborative Filtering Hit-Rate: 0.0
     Content-Based Hit-Rate: 1.0
-    cold items percentage in test: 0.0
-    cold rows percentage in test: 0.0
-    users with cold items percentage in test: 0.0
-    users with no cold items percentage in test: 1.0
+    cold items percentage in test: 1.0
+    cold rows percentage in test: 1.0
+    users with cold items percentage in test: 1.0
+    users with no cold items percentage in test: 0.0
     Hybrid Hit-Rate: 1.0
 
     :param movielens: MovieLens dataset
     :param als_config: collaborative model training params
     :param split_test_users_into: a number of chunks for testing
+    :param top_k: the number of items to recommend
+    :param train_percentage: percentage of user-item pairs to leave in the
+        training set
     """
     sparse_train, recommender, cf_hitrate, train, test = als_recommendations(
         movielens.ratings,
         als_config,
         split_test_users_into,
+        top_k,
+        train_percentage,
     )
     print("Collaborative Filtering Hit-Rate:", cf_hitrate)
     content_based_recommender = get_content_based_recommender(
-        movielens, split_test_users_into
+        movielens, split_test_users_into, top_k, train_percentage
     )
-    cold_items, test = get_cold_items(train, test)
     cold_factors = compute_cold_factors(
-        cold_items, content_based_recommender, recommender
+        get_cold_items(train, test), content_based_recommender, recommender
     )
     new_item_factors = (
         recommender.item_factors
@@ -163,6 +173,6 @@ def cold_start(
     print(
         "Hybrid Hit-Rate:",
         evaluate_implicit_recommender(
-            recommender, sparse_train, test, split_test_users_into, 10
+            recommender, sparse_train, test, split_test_users_into, top_k
         ),
     )

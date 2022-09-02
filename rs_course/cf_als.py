@@ -35,6 +35,8 @@ def als_recommendations(
     ratings: pd.DataFrame,
     model_params: Dict[str, Any],
     split_test_users_into: int,
+    top_k: int,
+    train_percentage: float,
 ) -> Tuple[
     csr_matrix, AlternatingLeastSquares, float, pd.DataFrame, pd.DataFrame
 ]:
@@ -49,21 +51,26 @@ def als_recommendations(
     ...      "random_state": 0,
     ...      "iterations": 1,
     ... }
-    >>> _, _, hitrate, _, _ = als_recommendations(
-    ...      ratings=ratings,
-    ...      model_params=model_params,
-    ...      split_test_users_into=1,
+    >>> _, _, hit_rate, _, _ = als_recommendations(
+    ...     ratings=ratings,
+    ...     model_params=model_params,
+    ...     split_test_users_into=1,
+    ...     top_k=10,
+    ...     train_percentage=0.95
     ... )
-    >>> print(hitrate)
+    >>> print(hit_rate)
     1.0
 
-    :param ratings: a dataset of user-items intersection
+    :param ratings: a dataset of user-items interactions
     :param model_params: ALS training parameters
     :param split_test_users_into: a number of chunks for testing
+    :param top_k: the number of items to recommend
+    :param train_percentage: percentage of user-item pairs to leave in the
+        training set
     :returns: a tuple of train set in sparse format, trained recommender,
-        hitrate@10, train, and test test in ``pandas format``
+        hit_rate@10, train, and test test in ``pandas format``
     """
-    train, test, shape = movielens_split(ratings, 0.95, True)
+    train, test, shape = movielens_split(ratings, train_percentage, True)
     sparse_train = pandas_to_scipy(
         train, "rating", "user_id", "item_id", shape
     )
@@ -74,7 +81,7 @@ def als_recommendations(
         sparse_train,
         recommender,
         evaluate_implicit_recommender(
-            recommender, sparse_train, test, split_test_users_into, 10
+            recommender, sparse_train, test, split_test_users_into, top_k
         ),
         train,
         test,

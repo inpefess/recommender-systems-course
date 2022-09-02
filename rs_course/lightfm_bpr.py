@@ -140,7 +140,7 @@ def lightfm_recommender(
     >>> lightfm_recommender(test_ratings, model_config, training_config, 1)
     1.0
 
-    :param ratings: a dataset of user-items intersection
+    :param ratings: a dataset of user-items interactions
     :param model_config: a dict of ``LightFM`` arguments
     :param training_config: a dict of ``fit_partial`` arguments
     :param split_test_users_into: split ``test`` by users into several chunks

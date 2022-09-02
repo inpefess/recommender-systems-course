@@ -157,7 +157,7 @@ def get_sparse_item_features(
 
 def enumerate_users_and_items(ratings: pd.DataFrame) -> None:
     """
-    Inplace change of user and item IDs into numbers.
+    In-place change of user and item IDs into numbers.
 
     :param ratings: ratings dataset
     """

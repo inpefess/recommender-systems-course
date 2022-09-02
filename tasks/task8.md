@@ -4,7 +4,7 @@
 * 95/5 train/test split by timestamp
 * evaluate Hit-rate@10
 
-# Factorizations Machines from Turi
+# Factorisations Machines from Turi
 
 * train a basic model (no side information)
 * train a model with item side-information

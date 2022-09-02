@@ -46,15 +46,31 @@ from rs_course.lightfm_bpr import lightfm_recommender
 from rs_course.popular import popular_recommender
 
 movielens = MovieLens("25m")
-popular_recommender(movielens.ratings, False)  # 0.5764079985323793
-popular_recommender(movielens.ratings, True)  # 0.16636455186304128
-get_content_based_recommender(movielens, 1)  # 0.21671701913393757
-collaborative_filtering_knn(movielens.ratings, 20, 1)  # 0.4241691842900302
+TOP_K = 10
+TRAIN_PERCENTAGE = 0.95
+popular_recommender(
+    movielens.ratings, False, TOP_K, TRAIN_PERCENTAGE
+)  # 0.5764079985323793
+popular_recommender(
+    movielens.ratings, True, TOP_K, TRAIN_PERCENTAGE
+)  # 0.16636455186304128
+get_content_based_recommender(
+    movielens, 1, TOP_K, TRAIN_PERCENTAGE
+)  # 0.21671701913393757
+collaborative_filtering_knn(
+    movielens.ratings, 20, 1, TOP_K, TRAIN_PERCENTAGE
+)  # 0.4241691842900302
 als_config = {"factors": 128, "use_gpu": True, "random_state": 0}
-_, _, hitrate, _, _ = als_recommendations(movielens.ratings, als_config, 1)
+_, _, hitrate, _, _ = als_recommendations(
+    movielens.ratings, als_config, 1, TOP_K, TRAIN_PERCENTAGE
+)
 print(hitrate)  # 0.4769385699899295
 pure_svd_recommender(
-    movielens.ratings, 2, {"n_components": 128, "random_state": 0}
+    movielens.ratings,
+    2,
+    {"n_components": 128, "random_state": 0},
+    TOP_K,
+    TRAIN_PERCENTAGE,
 )  # 0.48398791540785496
 lightfm_recommender(
     movielens.ratings,
@@ -80,6 +96,11 @@ print(
             "mlp_hidden_size": [128],
             "use_gpu": True,
         },
+        100,
+        TOP_K,
+        TRAIN_PERCENTAGE,
     )
 )  # ~0.05
-cold_start(movielens, als_config, 1)  # 0.5166163141993958
+cold_start(
+    movielens, als_config, 1, TOP_K, TRAIN_PERCENTAGE
+)  # 0.5166163141993958
