@@ -18,6 +18,7 @@ LightFM BPR Example
 
 """
 import os
+from dataclasses import dataclass
 from typing import Any, Dict, List
 
 import numpy as np
@@ -120,11 +121,29 @@ def get_lightfm_predictions(
     return pred
 
 
+@dataclass
+class RSParams:
+    """
+    A collection of general recommender system parameters.
+
+    :param split_test_users_into: into how many chunks to split the test set
+    :param top_k: the number of items to recommend
+    :param train_percentage: percentage of user-item pairs to leave in the
+        training set
+    :param warm_users_only: test on only those users, who were in training set
+    """
+
+    split_test_users_into: int
+    top_k: int
+    train_percentage: float
+    warm_users_only: bool
+
+
 def lightfm_recommender(
     ratings: pd.DataFrame,
+    rs_params: RSParams,
     model_config: Dict[str, Any],
     training_config: Dict[str, Any],
-    split_test_users_into: int,
 ) -> None:
     """
     Build a BPR model from ``lightfm``.
@@ -137,16 +156,20 @@ def lightfm_recommender(
     ... }
     >>> training_config = {"epochs": 1, "verbose": False}
     >>> test_ratings = getfixture("test_dataset").ratings  # noqa: F821
-    >>> lightfm_recommender(test_ratings, model_config, training_config, 1)
+    >>> rs_params = RSParams(1, 10, 0.95, True)
+    >>> lightfm_recommender(
+    ...     test_ratings, rs_params, model_config, training_config
+    ... )
     1.0
 
     :param ratings: a dataset of user-items interactions
+    :param rs_params: general recommender system parameters
     :param model_config: a dict of ``LightFM`` arguments
     :param training_config: a dict of ``fit_partial`` arguments
-    :param split_test_users_into: split ``test`` by users into several chunks
-        to fit into memory
     """
-    train_data, test_data, shape = movielens_split(ratings, 0.95, True)
+    train_data, test_data, shape = movielens_split(
+        ratings, rs_params.train_percentage, rs_params.warm_users_only
+    )
     sparse_train = pandas_to_scipy(
         train_data, "rating", "user_id", "item_id", shape
     )
@@ -155,6 +178,10 @@ def lightfm_recommender(
         sparse_train, num_threads=os.cpu_count(), **training_config
     )
     pred = get_lightfm_predictions(
-        model, sparse_train, test_data, 10, split_test_users_into
+        model,
+        sparse_train,
+        test_data,
+        rs_params.top_k,
+        rs_params.split_test_users_into,
     )
     print(hitrate(test_data, pred))
