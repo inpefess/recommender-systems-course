@@ -1,0 +1,323 @@
+\documentclass[t]{beamer}
+\title{Building Recommender Systems}
+\subtitle{Lecture 1}
+\author{Boris Shminke}
+\institute{Université Côte d'Azur, CNRS, LJAD, France}
+\date{06/10/2022}
+\AtBeginSection[]{
+  \begin{frame}
+    \frametitle{Outline}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+\begin{document}
+\begin{frame}
+  \titlepage  
+\end{frame}  
+\begin{frame}
+  \frametitle{Outline}
+  \tableofcontents
+\end{frame}
+\section{Administrative Questions}
+\begin{frame}
+  \frametitle{Why I'm teaching this course}
+  \begin{itemize}
+  \item building recommender systems (RS) from 2015
+  \item RS development team leader in ivi.ru for three years
+  \item RS R\&D team leader in Sberbank AI lab for two years
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{The course structure}
+  \begin{itemize}
+  \item 8 three-hour classes
+  \item one course project
+  \item starts today, ends in January
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{A class structure}
+  \begin{itemize}
+  \item $\sim1.5$ hours lecture
+  \item $\sim15$ minutes break
+  \item $\sim1.5$ hours practical session
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{What's on Moodle}
+  \begin{itemize}
+  \item lecture slide decks
+  \item practical tasks and solutions
+  \item Zoom links (if you can't come to the class)
+  \item \href{https://lms.univ-cotedazur.fr/2022/mod/forum/view.php?id=220784}{forum}
+  \item course \href{https://lms.univ-cotedazur.fr/2022/mod/assign/view.php?id=234467}{project} and grading
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Grading details}
+  \begin{itemize}
+  \item only course project is important
+  \item no obligatory homework
+  \item no exams
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{How to contact me}
+  \begin{itemize}
+  \item boris.shminke@univ-cotedazur.fr
+  \item through Moodle \href{https://lms.univ-cotedazur.fr/2022/mod/forum/view.php?id=220784}{forum}
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Peut-on parler français dans ce cours ?}
+  \begin{itemize}
+  \item Boris only learns French, his main working language is English, his mother tongue is Russian
+  \item Boris is not aware of any good books or educational resources on RS in French (if you find any, please share through the forum!)
+  \item Vous êtes bienvenus de rédiger votre projet et les devoirs en français !
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Parler anglais, c'est difficile pour moi...}
+  \begin{itemize}
+  \item pas de souci, vous pouvez poser des questions (y compris dans le forum !) en français
+  \item Boris peut souvent comprendre vos questions
+  \item mais d'habitude il ne peut pas expliquer les choses en français, car il ne connaît pas les mots (ou la terminologie n'existe pas encore en français)
+  \item essayer de lire, écouter et comprendre l'anglais, mais garder français pour parler si ça marche pour vous
+  \end{itemize}
+\end{frame}
+\section{Introduction to Recommender Systems}
+\begin{frame}
+  \frametitle{Recommender systems are everywhere}
+  \begin{itemize}
+  \item videos on YouTube
+  \item tracks on Spotify
+  \item posts on Facebook
+  \item books on Amazon
+  \item hotels on Booking
+  \item jobs on LinkedIn
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Well-established field of research}
+  \begin{itemize}
+  \item 1990s --- first papers on RS published
+  \item 1997 --- GroupLens (RS for Usenet News) launched
+  \item 2006–2009 --- Nextflix Prize
+  \item 2007 --- first ACM RecSys Conference
+  \item 2010 --- first RecSys Challenge
+  \item 2010 --- Recommender Systems Handbook first edition
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Recommended books}
+  \begin{itemize}
+  \item \href{https://doi.org/10.1007/978-1-0716-2197-4}{Recommender Systems Handbook} --- a new (2022) edition of a fundamental book about everything RS
+  \item \href{https://doi.org/10.1017/CBO9780511763113}{Recommender Systems: An Introduction} --- a slightly aged (2010) book which nonetheless discusses practical aspects of RS relevant until today
+  \item \href{https://www.amazon.com/Collaborative-Recommendations-Algorithms-Challenges-Applications/dp/9813275340}{Collaborative Recommendations: Algorithms, Practical Challenges and Applications} --- a more theoretical treaty on arguably the most successful RS paradigm
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Fundamental Terms}
+  \begin{itemize}
+  \item `items' --- something being recommended
+  \item `user' --- can interact with items (recommended and not)
+  \item `rating' --- quantified feedback after user-item interaction
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{User-Item Ratings Matrix}
+\begin{center}
+\begin{tabular}{ |c|c|c|c|c| }
+ \hline
+ & $item_1$ & $item_2$ & $item_3$ & $item_4$\\
+ \hline
+ $user_1$ & $1$ & & $5$ & $-3$\\
+ \hline
+ $user_2$ & & $0$ & $1$ &\\
+ \hline
+ $user_3$ & $-2$ & $1.5$ & &\\
+ \hline
+ $user_4$ & & & $-2.3$ & $0$\\
+ \hline
+\end{tabular}
+\end{center}
+\end{frame}
+\begin{frame}
+  \frametitle{Recommender system cycle}
+  \begin{itemize}
+  \item user connects to the system
+  \item systems provides a structured set of items
+  \item user interacts with items
+  \item feedback is collected
+  \item system learns
+  \item (another) user connects
+  \item ...
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{What an RS returns to a user?}
+  \begin{itemize}
+  \item one best item (ad at some spot, next video auto-play)
+  \item a handful of items (you can also like, special offer)
+  \item ranked lists (romantic comedies personalized sorting)
+  \item list of lists (YouTube/Netflix main page)
+  \item a tree (a menu of lists of lists of lists of lists...)
+  \item set of items organized in any structure
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Explicit feedback}
+  \begin{itemize}
+  \item review
+  \item questionnaire
+  \item stars
+  \item like/dislike
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Explicit feedback}
+  \begin{itemize}
+  \item complex (self-contradictory sometimes)
+  \item hard to collect (and thus scarce)
+  \item biased
+  \item all people are different
+  \item everybody lies
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Implicit feedback}
+  \begin{itemize}
+  \item number of times a user listened to a soundtrack
+  \item number of episodes of the show a user watched
+  \item sum of money a user spent on a particular brand
+  \item time a user spent reading articles on that topic
+  \item any numeric measurement of interaction
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Implicit feedback}
+  \begin{itemize}
+  \item simple (one number)
+  \item cheap and abundant
+  \item biased
+  \item hard to interpret
+  \item can be gamed on purpose
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{More terminology}
+  \begin{itemize}
+  \item item2user (aka personal; most focus here)
+  \item item2item (users who bought this also bought)
+  \item user2user (friend suggestion, prediction of missing edges in a graph)
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Recommender system vs Search}
+  \begin{itemize}
+  \item user is an (ever changing) query
+  \item there is no ideal ranking
+  \item recommending top-down list is not always the best idea
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Recommender system vs Advertisement}
+  \begin{itemize}
+  \item users asks for recommendations
+  \item the systems doesn’t need to promote anything
+  \item retention is more important than selling now
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Non-example: a few items}
+  \begin{itemize}
+  \item banking cards, telecom tariffs, master programs
+  \item show everything or
+  \item build a separate classification model for each item
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Non-example: repeating the action}
+  \begin{itemize}
+  \item even if we have gazillions of items
+  \item every user interacts only with a very small number of them
+  \item recommending what track to relisten, book to reread, etc
+  \item is usually solved as a classification problem
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Non-example: items are too different}
+  \begin{itemize}
+  \item sums of withdrawal in an ATM, plane tickets for a holiday
+  \item Q\&A system
+  \item classification can work as well
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Non-example: item's value is objective}
+  \begin{itemize}
+  \item financial market products
+  \item value is universal, no need for personalisation
+  \item predicting true value is more important
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Rules of thumb for an RS application}
+  \begin{itemize}
+  \item user can’t observe all items during one séance (100-1000 or more)
+  \item `good' items are nearly interchangeable for user
+  \item user can't sometimes discern between `good' and `bad'
+  \end{itemize}
+\end{frame}
+\section{RS Validation}
+\begin{frame}
+  \frametitle{Accuracy metrics}
+  \begin{itemize}
+  \item how often a user interacts with an item we recommended
+  \item how many interactions are generated from recommendations
+  \item position is important (ranking metrics are welcome)
+  \item easy to quantify
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Diversity}
+  \begin{itemize}
+  \item filter bubbles are bad
+  \item demonstration of item catalogue diversity is crucial for user retention
+  \item harder to quantify than accuracy
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Novelty}
+  \begin{itemize}
+  \item recommend something which a user was not aware of
+  \item but what looks for her as a plausible choice
+  \item quite hard to quantify (unexpectedness paper)
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Serendipity}
+  \begin{itemize}
+  \item recommends something which doesn't look like a good option
+  \item but user gives a try and loves it
+  \item nearly impossible to quantify
+  \item but probably the most important quality of RS
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{So, how to start}
+  \begin{itemize}
+  \item popular items are hard to beat in accuracy
+  \item diversity can be added by balancing genres etc
+  \item difference between a basic RS and advanced one for most users are small on average
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{How exactly to calculate metrics?}
+  \begin{itemize}
+  \item rs\_metrics: \url{https://darel13712.github.io/rs_metrics/}
+  \item Python package, easy to install and use
+  \item ten popular metrics implemented
+  \end{itemize}
+\end{frame}
+\end{document}
