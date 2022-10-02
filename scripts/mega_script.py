@@ -40,7 +40,7 @@ from rs_course.content_based_knn import get_content_based_recommender
 from rs_course.dnn_rs import dnn_recommender
 
 # pylint: disable=wrong-import-position
-from rs_course.lightfm_bpr import lightfm_recommender
+from rs_course.lightfm_bpr import RSParams, lightfm_recommender
 
 # pylint: disable=wrong-import-position
 from rs_course.popular import popular_recommender
@@ -74,6 +74,12 @@ pure_svd_recommender(
 )  # 0.48398791540785496
 lightfm_recommender(
     movielens.ratings,
+    RSParams(
+        split_test_users_into=1,
+        top_k=TOP_K,
+        train_percentage=TRAIN_PERCENTAGE,
+        warm_users_only=True,
+    ),
     {
         "no_components": 128,
         "loss": "bpr",
@@ -81,7 +87,6 @@ lightfm_recommender(
         "random_state": 0,
     },
     {"epochs": 15, "verbose": True},
-    1,
 )  # 0.3957703927492447
 print(
     dnn_recommender(

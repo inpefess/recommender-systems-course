@@ -13,49 +13,19 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-|CircleCI|\ |AppveyorCI|\ |Documentation Status|\ |codecov|
-
 ============================
 Building Recommender Systems
 ============================
 
-Description
-===========
+|CircleCI|\ |AppveyorCI|\ |Documentation Status|\ |codecov|\ |Zenodo|
 
-A recommender system (RS) can help to influence your customers’
-behaviour directly but entertainingly. In this course, we will build
-RS’s using different approaches: content-based, collaborative
-filtering, context-aware, or a hybrid one. We will learn about the
-theory behind diverse mathematical models of an RS task: matrix and
-tensor decompositions, associative rules, neighbourhood methods,
-learning to rank, and metric learning. For the practical part, we
-will employ classical machine learning (such as ``scikit-learn``),
-deep learning (e.g. ``pytorch``), and a slew of specialised packages
-(``implicit`` and ``lightfm`` amongs them). During the lectures, we
-will talk not only about theorems but also about applications of RS’s
-making the clients of companies and non-profit organisations happier.
-No prior knowledge of the subject is necessary. Python programming
-experience is mandatory. Statistical learning fundamentals will be
-nice to have.
-
-Topics
-======
-
-* Lecture 1. Introduction to the course. What is an RS? RS
-  validation.
-* Lecture 2. Content-based (CB) recommender systems. Classifiers,
-  neighbourhood methods, item-to-item recommendations.
-* Lecture 3. Collaborative filtering (CF). Associative rules,
-  similarities with CB
-* Lecture 4. Advanced CF methods. Matrix and tensor decompositions,
-  factorisation machines, ALS and PureSVD
-* Lecture 5. Recommendations in production. Learning to rank and
-  multi-stages architectures
-* Lecture 6. Deep learning in RS. Metric learning, two towers, deep
-  and wide architecture
-* Lecture 7. Cold-start problem. CB2CF, MaxVol
-* Lecture 8. Advanced topics in RS: context-aware RS, factorisation
-  machines
+This is a utility package for the course `SMEMI315: Building
+Recommender systems
+<https://syllabus.univ-cotedazur.fr/fr/course/router-light/SMEMI315>`__
+taught at the Université Côte d'Azure in autumns of 2021 and 2022.
+See the `course description
+<https://recommender-systems-course.rtfd.io/en/latest/course-desc.html>`__
+for more info about its content.
 
 How to Install
 ==============
@@ -113,6 +83,54 @@ On macOS
 Should be in principle installable in a similar way as on
 Linux, but not tested.
 
+How to Use
+===========
+
+This package is supposed to be used together with ``rs_datasets``:
+
+.. code:: python
+
+    from rs_datasets import MovieLens
+
+    ratings = MovieLens("small").ratings
+
+The package contains pre-packed examples of different recommenders.
+For example, this function computes ``hit-rate@1`` of a PureSVD
+trained with default parameteres from ``scikit-learn`` on randomly
+selected 80% of ratings:
+
+.. code:: python
+
+    from rs_course.cf_svd import
+    pure_svd_recommender
+    
+    pure_svd_recommender(
+	  ratings=ratings,
+	  split_test_users_into=1,
+	  model_config={},
+	  top_k=1,
+	  train_percentage=0.8
+    )
+
+More Detailed Documentation
+============================
+
+More detailed documentation is available `here
+<https://recommender-systems-course.rtfd.io>`__.
+
+Similar packages
+=================
+
+This package is not supposed to be used as a recommender systems
+library. It's only purpose is to help a complete beginner to get the
+taste of the recommenders' world. For a proper library, try something
+from `this list <https://github.com/Darel13712/recsys_libraries>`__.
+
+How to Cite
+============
+
+If you want to cite this package in your research paper, please use the following `DOI <https://doi.org/10.5281/zenodo.7096595>`__.
+
 .. |CircleCI| image:: https://circleci.com/gh/inpefess/recommender-systems-course.svg?style=svg
    :target: https://circleci.com/gh/inpefess/recommender-systems-course
 .. |Documentation Status| image:: https://readthedocs.org/projects/recommender-systems-course/badge/?version=latest
@@ -121,3 +139,5 @@ Linux, but not tested.
    :target: https://codecov.io/gh/inpefess/recommender-systems-course
 .. |AppveyorCI| image:: https://ci.appveyor.com/api/projects/status/32ws0aamvby6mc6o?svg=true
    :target: https://ci.appveyor.com/project/inpefess/recommender-systems-course
+.. |Zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.7096596.svg
+   :target: https://doi.org/10.5281/zenodo.7096595
