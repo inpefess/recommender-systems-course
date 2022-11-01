@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rs_course"
-version = "0.0.9"
+version = "0.0.10"
 description = "A course on Recommender Systems"
 authors = ["Boris Shminke <boris@shminke.ml>"]
 license = "Apache-2.0"
@@ -33,7 +33,7 @@ recbole = "*"
 
 [tool.poetry.dev-dependencies]
 pylint = "*"
-mypy = "*"
+mypy = "<0.982"
 pre-commit = "*"
 black = "*"
 flake8 = "*"
@@ -56,7 +56,7 @@ profile = "black"
 src_paths = ["rs_course"]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core<1.2.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
@@ -143,7 +143,7 @@ commands =
 github_url = "https://github.com/inpfess/recommender-systems-course/"
 
 [tool.tbump.version]
-current = "0.0.9"
+current = "0.0.10"
 regex = '''
   (?P<major>\d+)
   \.

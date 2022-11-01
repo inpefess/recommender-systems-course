@@ -42,7 +42,7 @@ Topics
 * Lecture 3. Collaborative filtering (CF). Associative rules,
   similarities with CB
 * Lecture 4. Advanced CF methods. Matrix and tensor decompositions,
-  factorisation machines, ALS and PureSVD
+  ALS and PureSVD
 * Lecture 5. Recommendations in production. Learning to rank and
   multi-stages architectures
 * Lecture 6. Deep learning in RS. Metric learning, two towers, deep

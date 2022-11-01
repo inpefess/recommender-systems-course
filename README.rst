@@ -17,7 +17,7 @@
 Building Recommender Systems
 ============================
 
-|CircleCI|\ |AppveyorCI|\ |Documentation Status|\ |codecov|\ |Zenodo|
+|Binder|\ |CircleCI|\ |AppveyorCI|\ |Documentation Status|\ |codecov|\ |Zenodo|
 
 This is a utility package for the course `SMEMI315: Building
 Recommender systems
@@ -33,18 +33,24 @@ How to Install
 In a Docker container
 ----------------------
 
-First, install `Docker <https://docs.docker.com/get-docker/>`__ on your system.
+First, install `Docker <https://docs.docker.com/get-docker/>`__ on your system. Then:
 
 .. code:: sh
 
    docker build -t recommender-systems-course https://github.com/inpefess/recommender-systems-course.git
    docker run -it --rm -p 8888:8888 recommender-systems-course jupyter-lab --ip=0.0.0.0 --port=8888
 
+
+You can also try it on `MyBinder
+<https://mybinder.org/v2/gh/inpefess/recommender-systems-course/HEAD?labpath=notebooks/usage-example.ipynb>`__
+(it's a free system, so resources are not always available).
+   
 On Linux
 ---------
 
-This includes `Google Colab <https://colab.research.google.com/>`__
-and `Kaggle <https://www.kaggle.com/docs/notebooks>`__.
+This includes `Google Colab <https://colab.research.google.com/>`__,
+`Kaggle <https://www.kaggle.com/docs/notebooks>`__, and `VertexAI
+Workbench <https://cloud.google.com/vertex-ai-workbench>`__.
 
 .. code:: sh
 
@@ -101,8 +107,7 @@ selected 80% of ratings:
 
 .. code:: python
 
-    from rs_course.cf_svd import
-    pure_svd_recommender
+    from rs_course.cf_svd import pure_svd_recommender
     
     pure_svd_recommender(
 	  ratings=ratings,
@@ -141,3 +146,5 @@ If you want to cite this package in your research paper, please use the followin
    :target: https://ci.appveyor.com/project/inpefess/recommender-systems-course
 .. |Zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.7096596.svg
    :target: https://doi.org/10.5281/zenodo.7096595
+.. |Binder| image:: https://mybinder.org/static/images/badge_logo.svg
+   :target: https://mybinder.org/v2/gh/inpefess/recommender-systems-course/HEAD?labpath=notebooks/usage-example.ipynb
