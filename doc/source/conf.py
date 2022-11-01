@@ -30,7 +30,7 @@ sys.path.insert(0, os.path.abspath("../.."))
 
 project = "recommender-systems-course"
 copyright = "2022, Boris Shminke"
-version = "0.0.9"
+version = "0.0.10"
 author = "Boris Shminke"
 
 # -- General configuration ---------------------------------------------------
