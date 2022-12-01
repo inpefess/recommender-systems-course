@@ -84,7 +84,7 @@ def get_recbole_trained_recommender(
         config.final_config_dict["device"]
     )
     Trainer(config, recommender).fit(
-        train_data, valid_data, saved=True, show_progress=True
+        train_data, valid_data, saved=True, verbose=True
     )
     recommender.eval()
     return recommender

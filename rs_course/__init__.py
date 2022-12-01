@@ -17,4 +17,4 @@
 A Convenience Package for a Recommender Systems Course
 ======================================================
 """
-__version__ = "0.0.10"
+__version__ = "0.0.11"
