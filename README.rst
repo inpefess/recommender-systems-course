@@ -56,6 +56,13 @@ Workbench <https://cloud.google.com/vertex-ai-workbench>`__.
 
    pip install git+https://github.com/inpefess/recommender-systems-course.git
 
+Depending on your environment (this is a known issue on VertexAI
+Workbench, for example), you should add other parameters to this
+command.
+   
+.. code:: sh
+	  
+   PATH=/home/jupyter/.local/bin:$PATH; pip install --user git+https://github.com/inpefess/recommender-systems-course.git
 
 On Windows
 -----------
