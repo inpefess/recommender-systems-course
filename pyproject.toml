@@ -132,10 +132,10 @@ deps =
     pyenchant
     toml
 commands =
-    flake8 rs_course scripts
-    pydocstyle rs_course scripts
-    pylint rs_course scripts
-    mypy rs_course scripts
+    flake8 rs_course scripts tests
+    pydocstyle rs_course scripts tests
+    pylint rs_course scripts tests
+    mypy rs_course scripts tests
     pytest
 """
 

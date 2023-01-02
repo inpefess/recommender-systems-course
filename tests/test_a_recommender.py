@@ -45,10 +45,14 @@ def _check_training_data(training_data: pd.DataFrame) -> None:
             "user_id, item_id, rating",
         )
     if not np.issubdtype(
-        training_data.user_id.dtype, np.integer
-    ) or not np.issubdtype(training_data.item_id.dtype, np.integer):
+        training_data.user_id.dtype, np.integer  # type: ignore
+    ) or not np.issubdtype(
+        training_data.item_id.dtype, np.integer  # type: ignore
+    ):
         raise TypeError("User ID and item ID must be of integer type")
-    if not np.issubdtype(training_data.rating.dtype, np.floating):
+    if not np.issubdtype(
+        training_data.rating.dtype, np.floating  # type: ignore
+    ):
         raise TypeError("Rating must be of floating point type")
 
 
@@ -100,19 +104,26 @@ class DummyRecommender(BaseRecommender):
     """A non-working implementation of a recommender."""
 
     def __init__(self, dummy_parameter: int):
+        """
+        Set the only parameter.
+
+        :param dummy_parameter: dummy integer parameter
+        """
         self.dummy_parameter = dummy_parameter
 
     def _fit(self, training_data: pd.DataFrame) -> None:
         pass
 
     def _predict(self, user_ids: List[int], top_k: int) -> pd.DataFrame:
-        return self.dummy_parameter
+        # this line is deliberately nonsensical
+        return self.dummy_parameter  # type: ignore
 
 
 class RecommenderTest(TestCase):
     """Test fit and predict methods."""
 
     def setUp(self):
+        """Create a dummy recommender for testing."""
         recommender = DummyRecommender(1)
         small_dataset = MovieLens("small").ratings
         recommender.fit(small_dataset)

@@ -6,10 +6,10 @@ cd doc
 make clean html coverage
 cat build/coverage/python.txt
 cd ..
-flake8 ${PACKAGE_NAME} scripts
-pydocstyle ${PACKAGE_NAME} scripts
-pylint ${PACKAGE_NAME} scripts
-mypy ${PACKAGE_NAME} scripts
+flake8 ${PACKAGE_NAME} scripts tests
+pydocstyle ${PACKAGE_NAME} scripts tests
+pylint ${PACKAGE_NAME} scripts tests
+mypy ${PACKAGE_NAME} scripts tests
 export TEST_ON_GPU=
 pytest
 scc -i py ${PACKAGE_NAME} scripts
