@@ -25,7 +25,6 @@ DATASETS = [
     "https://darel13712.github.io/rs_datasets/Datasets/goodreads/",
     "https://darel13712.github.io/rs_datasets/Datasets/epinions/",
     "https://darel13712.github.io/rs_datasets/Datasets/bookx/",
-    "https://darel13712.github.io/rs_datasets/Datasets/dating_agency/",
     "https://darel13712.github.io/rs_datasets/Datasets/jester/",
     "books from https://darel13712.github.io/rs_datasets/Datasets/amazon/",
     "https://darel13712.github.io/rs_datasets/Datasets/rekko/",
