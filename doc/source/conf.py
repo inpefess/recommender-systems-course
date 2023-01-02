@@ -1,5 +1,5 @@
 # type: ignore
-# Copyright 2022 Boris Shminke
+# Copyright 2022-2023 Boris Shminke
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,8 +29,8 @@ sys.path.insert(0, os.path.abspath("../.."))
 # -- Project information -----------------------------------------------------
 
 project = "recommender-systems-course"
-copyright = "2022, Boris Shminke"
-version = "0.0.11"
+copyright = "2022-2023, Boris Shminke"
+version = "0.0.12"
 author = "Boris Shminke"
 
 # -- General configuration ---------------------------------------------------

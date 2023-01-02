@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Boris Shminke
+# Copyright 2021-2023 Boris Shminke
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ DATASETS = [
     "https://darel13712.github.io/rs_datasets/Datasets/goodreads/",
     "https://darel13712.github.io/rs_datasets/Datasets/epinions/",
     "https://darel13712.github.io/rs_datasets/Datasets/bookx/",
-    "https://darel13712.github.io/rs_datasets/Datasets/dating_agency/",
     "https://darel13712.github.io/rs_datasets/Datasets/jester/",
     "books from https://darel13712.github.io/rs_datasets/Datasets/amazon/",
     "https://darel13712.github.io/rs_datasets/Datasets/rekko/",
