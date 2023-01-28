@@ -59,9 +59,7 @@ MODELS = [
     "implicit ALS",
     "implicit KNN",
     "popular",
-    "LightFM",
-    "turi",
-    "spotlight",
+    "recbole",
 ]
 
 

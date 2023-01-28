@@ -25,7 +25,7 @@ tensor decompositions, associative rules, neighbourhood methods,
 learning to rank, and metric learning. For the practical part, we
 will employ classical machine learning (such as ``scikit-learn``),
 deep learning (e.g. ``pytorch``), and a slew of specialised packages
-(``implicit`` and ``lightfm`` amongs them). During the lectures, we
+(``implicit`` amongs them). During the lectures, we
 will talk not only about theorems but also about applications of RS’s
 making the clients of companies and non-profit organisations happier.
 No prior knowledge of the subject is necessary. Python programming

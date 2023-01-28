@@ -3,5 +3,4 @@ implicit
 recbole
 rs_datasets
 rs_metrics
-lightfm
 vowpalwabbit
