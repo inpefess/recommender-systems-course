@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rs_course"
-version = "0.0.12"
+version = "0.1.0"
 description = "A course on Recommender Systems"
 authors = ["Boris Shminke <boris@shminke.ml>"]
 license = "Apache-2.0"
@@ -141,7 +141,7 @@ commands =
 github_url = "https://github.com/inpfess/recommender-systems-course/"
 
 [tool.tbump.version]
-current = "0.0.12"
+current = "0.1.0"
 regex = '''
   (?P<major>\d+)
   \.
