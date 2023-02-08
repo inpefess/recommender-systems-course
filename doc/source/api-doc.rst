@@ -27,8 +27,6 @@ Package Documentation
    :members:
 .. automodule:: rs_course.cf_svd
    :members:
-.. automodule:: rs_course.lightfm_bpr
-   :members:
 .. automodule:: rs_course.dnn_rs
    :members:
 .. automodule:: rs_course.cold_start

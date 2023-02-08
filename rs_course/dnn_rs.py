@@ -19,22 +19,106 @@ DNN Recommender Example
 """
 import os
 import shutil
-from typing import Any, Dict
+from typing import Any, Dict, List
 
+import numpy as np
 import pandas as pd
+import torch
 from recbole.config import Config
 from recbole.data import data_preparation
 from recbole.data.dataset import Dataset
 from recbole.model.general_recommender import ConvNCF
 from recbole.trainer import Trainer
 from rs_metrics import hitrate
+from scipy.sparse import csr_matrix
+from tqdm import tqdm
 
-from rs_course.lightfm_bpr import get_lightfm_predictions
 from rs_course.utils import (
     enumerate_users_and_items,
     movielens_split,
     pandas_to_scipy,
 )
+
+
+def _get_dnn_weights(
+    sparse_train: csr_matrix,
+    split_test_users_into: int,
+    recommender,
+    test_users_part: np.ndarray,
+) -> np.ndarray:
+    test_items_parts = np.array_split(
+        np.arange(sparse_train.shape[1]), split_test_users_into
+    )
+    raw_weights_small_parts = []
+    for test_items_part in test_items_parts:
+        raw_weights_small_parts.append(
+            recommender.predict(
+                {
+                    "user_id": torch.tensor(
+                        np.repeat(test_users_part, test_items_part.shape[0]),
+                        dtype=torch.long,
+                        device=recommender.device,
+                    ),
+                    "item_id": torch.tensor(
+                        np.tile(test_items_part, test_users_part.shape[0]),
+                        dtype=torch.long,
+                        device=recommender.device,
+                    ),
+                }
+            )
+            .cpu()
+            .detach()
+            .numpy()
+            .reshape(test_users_part.shape[0], test_items_part.shape[0])
+        )
+    return np.hstack(raw_weights_small_parts)
+
+
+def get_dnn_predictions(
+    recommender: Any,
+    sparse_train: csr_matrix,
+    test: pd.DataFrame,
+    top_k: int,
+    split_test_users_into: int,
+) -> Dict[int, List[int]]:
+    """
+    Get recommendations given a DNN recommender.
+
+    :param recommender: a recommender
+    :param sparse_train: a ``scr_matrix`` representation of the train data
+    :param test: test data
+    :param top_k: how many recommendations to return for each user
+    :param split_test_users_into: split ``test`` by users into several chunks
+        to fit into memory
+    :returns: recommendations in ``rs_metrics`` compatible format
+    """
+    test_users_parts = np.array_split(
+        test.user_id.unique(), split_test_users_into
+    )
+    pred = {}
+    for test_users_part in tqdm(test_users_parts):
+        raw_weights_part = _get_dnn_weights(
+            sparse_train,
+            split_test_users_into,
+            recommender,
+            test_users_part,
+        )
+        no_train_weights = np.where(
+            (sparse_train[test_users_part].toarray() > 0),
+            0.0,
+            raw_weights_part,
+        )
+        pred.update(
+            dict(
+                zip(
+                    test_users_part,
+                    np.argpartition(  # type: ignore
+                        -no_train_weights, top_k, axis=1
+                    )[:, :top_k],
+                )
+            )
+        )
+    return pred
 
 
 def prepare_recbole_data(
@@ -181,7 +265,7 @@ def dnn_recommender(
     recommender = get_recbole_trained_recommender(
         recbole_config, recbole_train
     )
-    pred = get_lightfm_predictions(
+    pred = get_dnn_predictions(
         recommender,
         train_sparse,
         test,
